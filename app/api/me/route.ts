@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 export const GET = async (req: NextRequest) => {
     const cookie = cookies();
-    console.log(cookie.get("connect.sid"));
+    console.log(cookie.getAll());
 
     const response = await fetch("https://diplomas.medilawvichi.com/user/me", {
         credentials: "include",

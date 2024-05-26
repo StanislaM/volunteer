@@ -21,7 +21,11 @@ const LoginForm = ({ ...props }: Props) => {
 
     const navigateToRegister = () => {
         // router.push("/register");
-        const res = fetch("/api/me", { credentials: "include" });
+        console.log(document.cookie.split(";"));
+
+        const res = axios.get("https://diplomas.medilawvichi.com/user/me", {
+            withCredentials: true,
+        });
         res.then((data) => console.log(data));
     };
 
