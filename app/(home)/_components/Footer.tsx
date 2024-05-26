@@ -10,7 +10,11 @@ const Footer = (props: Props) => {
         <footer className="bg-gray-dark py-3">
             <Container>
                 <div className="flex items-center justify-between">
-                    <Logo variant="with-watermark" color="light" />
+                    <Logo
+                        variant="with-watermark"
+                        color="light"
+                        isLink={false}
+                    />
 
                     <ul className="flex items-center justify-center gap-x-6 font-normal">
                         {staticData.navLinks.map((link, i) => (

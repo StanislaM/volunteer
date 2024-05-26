@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, Montserrat } from "next/font/google";
 import "./globals.css";
+import StoreProvider from "./_providers/StoreProvider";
 
 export const montserrat = Montserrat({
     subsets: ["cyrillic"],
@@ -19,12 +20,14 @@ export default function RootLayout({
     children: React.ReactNode;
 }>) {
     return (
-        <html lang="en">
-            <body
-                className={`${montserrat.variable} ${inter.variable} overflow-x-hidden bg-gray-bg font-montserrat`}
-            >
-                {children}
-            </body>
-        </html>
+        <StoreProvider>
+            <html lang="en">
+                <body
+                    className={`${montserrat.variable} ${inter.variable} overflow-x-hidden bg-gray-bg font-montserrat`}
+                >
+                    {children}
+                </body>
+            </html>
+        </StoreProvider>
     );
 }

@@ -25,6 +25,7 @@ type Props = {
     size?: keyof typeof sizes;
     fontStyle?: keyof typeof fontStyles;
     center?: boolean;
+    className?: string;
 } & React.ButtonHTMLAttributes<HTMLButtonElement>;
 
 const Button = ({

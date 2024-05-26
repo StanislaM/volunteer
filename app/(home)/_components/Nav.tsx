@@ -4,13 +4,16 @@ import Button from "@/components/ui/Button";
 import Logo from "@/components/ui/Logo";
 import { staticData } from "@/shared/staticData";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 type Props = {};
 
 const Nav = (props: Props) => {
+    const router = useRouter();
+
     const handleJoin = () => {
-        console.log("Join");
+        router.push("/login");
     };
 
     return (
