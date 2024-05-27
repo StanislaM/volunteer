@@ -23,7 +23,7 @@ const LoginForm = ({ ...props }: Props) => {
         // router.push("/register");
         console.log(document.cookie.split(";"));
 
-        const res = axios.get("https://diplomas.medilawvichi.com/user/me", {
+        const res = axios.get("/api/user/me", {
             withCredentials: true,
         });
         res.then((data) => console.log(data));
@@ -34,7 +34,7 @@ const LoginForm = ({ ...props }: Props) => {
         e.preventDefault();
 
         const res = axios.post(
-            "https://diplomas.medilawvichi.com/auth/login",
+            "/api/auth/login",
             {
                 email: "example@gmail.com",
                 password: "12345",

@@ -3,11 +3,11 @@ import { Inter, Montserrat } from "next/font/google";
 import "./globals.css";
 import StoreProvider from "./_providers/StoreProvider";
 
-export const montserrat = Montserrat({
+const montserrat = Montserrat({
     subsets: ["cyrillic"],
     variable: "--font-montserrat",
 });
-export const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
+const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
 export const metadata: Metadata = {
     title: "Volunteer",
