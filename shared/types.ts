@@ -19,3 +19,14 @@ export interface ICategoryCard {
     name: string;
     url: string;
 }
+
+export interface ILoginData {
+    email: string;
+    password: string;
+}
+
+export interface IAccountInfo {
+    email: string;
+    firstName: string;
+    lastName: string;
+}

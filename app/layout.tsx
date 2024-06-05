@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter, Montserrat } from "next/font/google";
 import "./globals.css";
 import StoreProvider from "./_providers/StoreProvider";
+import AutoLoginProvider from "./_providers/AutoLoginProvider";
 
 const montserrat = Montserrat({
     subsets: ["cyrillic"],
@@ -25,7 +26,10 @@ export default function RootLayout({
                 <body
                     className={`${montserrat.variable} ${inter.variable} overflow-x-hidden bg-gray-bg font-montserrat`}
                 >
-                    {children}
+                    <>
+                        <AutoLoginProvider />
+                        {children}
+                    </>
                 </body>
             </html>
         </StoreProvider>

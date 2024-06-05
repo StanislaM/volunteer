@@ -31,7 +31,9 @@ const InfoBlock: TInfoBlock = ({ Icon, value }) => {
 type Props = {} & IMissionCard;
 
 const MissionCard = ({ id, info, descr, host, title }: Props) => {
-    const [hostImage, setHostImage] = useState(host.img);
+    const [hostImage, setHostImage] = useState(
+        host.img || "/img/no-avatar.png",
+    );
 
     return (
         <div className="flex h-[245px] w-[430px] flex-col rounded-[20px] bg-white py-6 pl-7 pr-[22px] shadow-soft">

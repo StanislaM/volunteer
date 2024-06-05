@@ -3,6 +3,13 @@ import userSlice from "./features/user/userSlice";
 
 export const makeStore = () => {
     return configureStore({
+        middleware: (getDefaultMiddleware) =>
+            getDefaultMiddleware({
+                serializableCheck: {
+                    // Ignore these action types
+                    ignoredActions: ["user/autoLogin/fulfilled"],
+                },
+            }),
         reducer: {
             user: userSlice,
         },

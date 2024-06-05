@@ -5,9 +5,9 @@ import LoginForm from "../_components/LoginForm";
 import Container from "@/components/Container";
 import H from "@/components/ui/H";
 
-type Props = {};
+type Props = { data: any };
 
-const LoginPage = (props: Props) => {
+const LoginPage = ({ data }: Props) => {
     return (
         <>
             <Nav />

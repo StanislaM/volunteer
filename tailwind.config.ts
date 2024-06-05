@@ -27,6 +27,7 @@ const config: Config = {
                 "gray-semi-light": "#B6B7BB",
                 "gray-bg": "#F9FAF4",
                 "logo-violet": "#565B86",
+                "cherry-pink": "#FFB5C2",
             },
             fontFamily: {
                 montserrat: "var(--font-montserrat)",

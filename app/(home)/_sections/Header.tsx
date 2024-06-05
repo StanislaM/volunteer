@@ -1,12 +1,19 @@
+"use client";
+
 import Container from "@/components/Container";
+import SpinnerIcon from "@/components/icons/SpinnerIcon";
 import Button from "@/components/ui/Button";
 import H from "@/components/ui/H";
+import { RootState } from "@/lib/store";
 import { staticData } from "@/shared/staticData";
 import Image from "next/image";
+import { useSelector } from "react-redux";
 
 type Props = {};
 
 const Header = (props: Props) => {
+    const { status } = useSelector((state: RootState) => state.user);
+
     return (
         <header className="pb-[30px] pt-[200px]">
             <Container>
@@ -22,7 +29,13 @@ const Header = (props: Props) => {
 
                         <div className="mt-4 flex">
                             <Button size="xl" fontStyle="semibold">
-                                Приєднатися
+                                {status === "authorized" ? (
+                                    "Кабінет"
+                                ) : status === "authorizating" ? (
+                                    <SpinnerIcon spin size="sm" />
+                                ) : (
+                                    "Приєднатись"
+                                )}
                             </Button>
 
                             <Button

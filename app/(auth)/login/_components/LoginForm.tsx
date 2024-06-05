@@ -1,53 +1,35 @@
 "use client";
 
+import SpinnerIcon from "@/components/icons/SpinnerIcon";
 import Button from "@/components/ui/Button";
 import Input from "@/components/ui/Input";
-import { RootState } from "@/lib/store";
-
-import axios from "axios";
-import { cookies } from "next/headers";
+import { authorizeByLoginData } from "@/lib/features/user/userSlice";
+import { AppDispatch, RootState } from "@/lib/store";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 type Props = {} & React.FormHTMLAttributes<HTMLFormElement>;
 
 const LoginForm = ({ ...props }: Props) => {
     const router = useRouter();
-    const userName = useSelector((state: RootState) => state.user.name);
+    const { status } = useSelector((state: RootState) => state.user);
+    const dispatch = useDispatch() as AppDispatch;
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
     const navigateToRegister = () => {
-        // router.push("/register");
-        console.log(document.cookie.split(";"));
-
-        const res = axios.get("/api/user/me", {
-            withCredentials: true,
-        });
-        res.then((data) => console.log(data));
+        router.push("/register");
     };
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.stopPropagation();
         e.preventDefault();
 
-        const res = axios.post(
-            "/api/auth/login",
-            {
-                email: "example@gmail.com",
-                password: "12345",
-            },
-            {
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                withCredentials: true,
-            },
+        dispatch(authorizeByLoginData({ email, password })).then(() =>
+            router.push("/account"),
         );
-
-        res.then((data) => console.log(data));
     };
 
     return (
@@ -78,7 +60,7 @@ const LoginForm = ({ ...props }: Props) => {
                 className="mb-3 w-full"
                 type="submit"
             >
-                Увійти
+                {status === "authorizating" ? <SpinnerIcon spin /> : "Увійти"}
             </Button>
 
             <span className="mb-2 font-medium">або</span>

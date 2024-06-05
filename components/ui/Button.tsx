@@ -5,6 +5,7 @@ const variants = {
         "flex items-center justify-center rounded-[20px] bg-main-color-light text-gray-dark",
     outline:
         "flex items-center justify-center rounded-[20px] border border-[4px] border-main-color-light bg-none text-gray-dark",
+    accent: "flex items-center justify-center rounded-[20px] bg-cherry-pink text-gray-dark",
 };
 
 const sizes = {
