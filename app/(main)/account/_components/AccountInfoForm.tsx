@@ -1,10 +1,16 @@
 "use client";
 
+import ConfirmIcon from "@/components/icons/ConfirmIcon";
+import PenIcon from "@/components/icons/PenIcon";
+import TelegramIcon from "@/components/icons/TelegramIcon";
+import XMarkIcon from "@/components/icons/XMarkIcon";
 import Button from "@/components/ui/Button";
 import Input from "@/components/ui/Input";
 import Label from "@/components/ui/Label";
 import { IAccountInfo } from "@/shared/types";
-import React, { useState } from "react";
+import axios from "axios";
+import { useQRCode } from "next-qrcode";
+import React, { useEffect, useState } from "react";
 
 type Props = {
     accountInfo: IAccountInfo | undefined;
@@ -18,6 +24,11 @@ const AccountInfoForm = ({ accountInfo }: Props) => {
     const [prevInfo, setPrevInfo] = useState<IAccountInfo | undefined>(
         undefined,
     );
+
+    const [telegramLink, setTelegramLink] = useState("");
+    const [showTelegramLink, setShowTelegramLink] = useState(false);
+
+    const { SVG: TelegramQR } = useQRCode();
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -40,6 +51,20 @@ const AccountInfoForm = ({ accountInfo }: Props) => {
 
         setIsEditing(false);
     };
+
+    const fetchTelegramLink = () => {
+        const res = axios.post(
+            "/api/telegram/connection",
+            {},
+            { withCredentials: true },
+        );
+
+        res.then((data) => setTelegramLink(data.data.url));
+    };
+
+    useEffect(() => {
+        fetchTelegramLink();
+    }, []);
 
     return (
         <form
@@ -78,7 +103,17 @@ const AccountInfoForm = ({ accountInfo }: Props) => {
                     type="button"
                     onClick={changeEditing}
                 >
-                    {isEditing ? "Підтвердити" : "Редагувати"}
+                    {isEditing ? (
+                        <div className="flex items-center gap-x-1">
+                            <ConfirmIcon />
+                            Підтвердити
+                        </div>
+                    ) : (
+                        <div className="flex items-center gap-x-1">
+                            <PenIcon />
+                            Редагувати
+                        </div>
+                    )}
                 </Button>
 
                 {isEditing && (
@@ -88,10 +123,34 @@ const AccountInfoForm = ({ accountInfo }: Props) => {
                         type="button"
                         onClick={cancelEditing}
                     >
-                        Скасувати
+                        <div className="flex items-center gap-x-1">
+                            <XMarkIcon />
+                            Скасувати
+                        </div>
                     </Button>
                 )}
             </div>
+
+            <Button
+                className="mt-5 w-min text-nowrap rounded-[8px] bg-[#CDEFFF]"
+                onClick={() => setShowTelegramLink((state) => !state)}
+            >
+                <div className="flex items-center gap-x-1">
+                    {!showTelegramLink ? (
+                        <>
+                            <TelegramIcon />
+                            Телеграм Бот
+                        </>
+                    ) : (
+                        <>
+                            <TelegramQR
+                                text={telegramLink}
+                                options={{ width: 200 }}
+                            />
+                        </>
+                    )}
+                </div>
+            </Button>
         </form>
     );
 };
