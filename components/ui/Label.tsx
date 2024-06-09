@@ -1,7 +1,7 @@
 import React from "react";
 
 const variants = {
-    default: "pl-4 mb-2 text-[40px] leading-[46px] font-light text-gray-dark",
+    default: "pl-4 mb-2 text-[30px] leading-[36px] font-light text-gray-dark",
 };
 
 type Props = {

@@ -12,15 +12,15 @@ type Props = {};
 
 const Sidebar = (props: Props) => {
     return (
-        <aside className="h-full w-[355px] border-r-2 border-r-gray-semi-light border-opacity-40">
-            <div className="flex h-full flex-col justify-between pb-5 pl-7 pr-5 pt-8">
+        <aside className="h-full w-[280px] border-r-2 border-r-gray-semi-light border-opacity-40">
+            <div className="flex h-full flex-col justify-between pb-5 pl-4 pr-3 pt-8">
                 <div>
                     <Logo />
 
                     <div className="mt-20">
                         <Button
-                            size="lg"
-                            className="h-[67px] w-full px-3 text-[22px] font-bold"
+                            size="sm"
+                            className="h-[47px] w-full px-3 text-[16px] font-bold"
                         >
                             <PlusIcon />
                             <span className="ml-1">Створити нову місію</span>

@@ -1,12 +1,23 @@
-type Props = {
-    fill?: string;
+const sizes = {
+    sm: 14,
+    lg: 31,
 };
 
-const XMarkIcon = ({ fill = "#626367" }: Props) => {
+type Props = {
+    fill?: string;
+    size?: keyof typeof sizes;
+    strokeWidth?: number;
+};
+
+const XMarkIcon = ({
+    fill = "#626367",
+    size = "sm",
+    strokeWidth = 1.5,
+}: Props) => {
     return (
         <svg
-            width="14"
-            height="14"
+            width={sizes[size]}
+            height={sizes[size]}
             viewBox="0 0 14 14"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
@@ -14,7 +25,7 @@ const XMarkIcon = ({ fill = "#626367" }: Props) => {
             <path
                 d="M1 13L13 1M1 1L13 13"
                 stroke={fill}
-                strokeWidth="1.5"
+                strokeWidth={strokeWidth}
                 strokeLinecap="round"
                 strokeLinejoin="round"
             />

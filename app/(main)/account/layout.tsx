@@ -21,7 +21,7 @@ const MainLayout = ({ children }: Props) => {
             <div>
                 <Sidebar />
             </div>
-            <div className="w-full overflow-y-scroll px-14 py-16">
+            <div className="w-full overflow-y-scroll px-14 py-12">
                 {children}
             </div>
         </div>

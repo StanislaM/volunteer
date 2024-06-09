@@ -23,9 +23,18 @@ const H2: THeadingElement = ({ children, className }: THeading) => {
     );
 };
 
+const H3: THeadingElement = ({ children, className }: THeading) => {
+    return (
+        <h1 className={`text-[24px] font-normal leading-[30px] ${className}`}>
+            {children}
+        </h1>
+    );
+};
+
 const headings = {
     h1: H1,
     h2: H2,
+    h3: H3,
 };
 
 type Props = { type: keyof typeof headings } & THeading;

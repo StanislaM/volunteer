@@ -1,3 +1,4 @@
+import TelegramPopup from "@/components/TelegramPopup";
 import Footer from "../_components/Footer";
 import Nav from "../_components/Nav";
 import Advantages from "../_sections/Advantages";
@@ -9,6 +10,8 @@ import Missions from "../_sections/Missions";
 const HomePage = () => {
     return (
         <>
+            <TelegramPopup />
+
             <Nav />
 
             <Header />

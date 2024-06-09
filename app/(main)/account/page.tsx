@@ -34,7 +34,7 @@ const AccountInfoPage = (props: Props) => {
 
     return (
         <div>
-            <H type="h2" className="text-center">
+            <H type="h3" className="text-center">
                 Персональні дані
             </H>
 

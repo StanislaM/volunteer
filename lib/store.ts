@@ -7,7 +7,10 @@ export const makeStore = () => {
             getDefaultMiddleware({
                 serializableCheck: {
                     // Ignore these action types
-                    ignoredActions: ["user/autoLogin/fulfilled"],
+                    ignoredActions: [
+                        "user/autoLogin/fulfilled",
+                        "user/authorizeByLoginData/fulfilled",
+                    ],
                 },
             }),
         reducer: {

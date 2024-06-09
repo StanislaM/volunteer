@@ -25,7 +25,7 @@ const SidebarItem = ({ title, Icon, link, active = false }: Props) => {
         >
             <div className="flex items-center">
                 {Icon}
-                <span className="ml-2 text-[20px] font-semibold text-gray-dark ">
+                <span className="ml-2 text-[16px] font-semibold text-gray-dark ">
                     {title}
                 </span>
             </div>

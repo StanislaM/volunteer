@@ -1,12 +1,24 @@
-type Props = {
-    fill?: string;
+const sizes = {
+    lg: {
+        w: 35,
+        h: 35,
+    },
+    sm: {
+        w: 16,
+        h: 14,
+    },
 };
 
-const TelegramIcon = ({ fill = "#039BE5" }: Props) => {
+type Props = {
+    fill?: string;
+    size?: keyof typeof sizes;
+};
+
+const TelegramIcon = ({ fill = "#039BE5", size = "sm" }: Props) => {
     return (
         <svg
-            width="16"
-            height="14"
+            width={sizes[size].w}
+            height={sizes[size].h}
             viewBox="0 0 15 13"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"

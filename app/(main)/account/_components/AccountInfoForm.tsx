@@ -4,6 +4,7 @@ import ConfirmIcon from "@/components/icons/ConfirmIcon";
 import PenIcon from "@/components/icons/PenIcon";
 import TelegramIcon from "@/components/icons/TelegramIcon";
 import XMarkIcon from "@/components/icons/XMarkIcon";
+import TelegramConectModal from "@/components/modals/TelegramConectModal";
 import Button from "@/components/ui/Button";
 import Input from "@/components/ui/Input";
 import Label from "@/components/ui/Label";
@@ -25,10 +26,7 @@ const AccountInfoForm = ({ accountInfo }: Props) => {
         undefined,
     );
 
-    const [telegramLink, setTelegramLink] = useState("");
-    const [showTelegramLink, setShowTelegramLink] = useState(false);
-
-    const { SVG: TelegramQR } = useQRCode();
+    const [showTelegramModal, setShowTelegramModal] = useState(false);
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -51,20 +49,6 @@ const AccountInfoForm = ({ accountInfo }: Props) => {
 
         setIsEditing(false);
     };
-
-    const fetchTelegramLink = () => {
-        const res = axios.post(
-            "/api/telegram/connection",
-            {},
-            { withCredentials: true },
-        );
-
-        res.then((data) => setTelegramLink(data.data.url));
-    };
-
-    useEffect(() => {
-        fetchTelegramLink();
-    }, []);
 
     return (
         <form
@@ -133,24 +117,19 @@ const AccountInfoForm = ({ accountInfo }: Props) => {
 
             <Button
                 className="mt-5 w-min text-nowrap rounded-[8px] bg-[#CDEFFF]"
-                onClick={() => setShowTelegramLink((state) => !state)}
+                onClick={() => setShowTelegramModal(true)}
             >
                 <div className="flex items-center gap-x-1">
-                    {!showTelegramLink ? (
-                        <>
-                            <TelegramIcon />
-                            Телеграм Бот
-                        </>
-                    ) : (
-                        <>
-                            <TelegramQR
-                                text={telegramLink}
-                                options={{ width: 200 }}
-                            />
-                        </>
-                    )}
+                    <>
+                        <TelegramIcon />
+                        Телеграм Бот
+                    </>
                 </div>
             </Button>
+            <TelegramConectModal
+                isOpen={showTelegramModal}
+                setIsOpen={setShowTelegramModal}
+            />
         </form>
     );
 };

@@ -29,17 +29,18 @@ const Profile = (props: Props) => {
                 <Image
                     alt="avatar"
                     src="/img/no-avatar.png"
-                    width={59}
-                    height={59}
+                    width={45}
+                    height={45}
                 />
 
-                <span className="ml-2 text-[20px] font-medium text-gray-dark">
+                <span className="ml-2 text-[16px] font-medium text-gray-dark">
                     {user && `${user.firstName || ""} ${user.lastName || ""}`}
                 </span>
             </div>
 
             <Button
                 variant="accent"
+                className="text-[14px]"
                 fontStyle="semibold"
                 onClick={handleLogOut}
             >
