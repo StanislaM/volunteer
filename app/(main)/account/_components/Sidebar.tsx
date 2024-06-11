@@ -26,7 +26,7 @@ const Sidebar = (props: Props) => {
                             <span className="ml-1">Створити нову місію</span>
                         </Button>
 
-                        <div className="mt-8 flex flex-col gap-y-6">
+                        <div className="mt-8 flex flex-col gap-y-4">
                             <SidebarItem
                                 title="Мої місії"
                                 Icon={<MeIcon />}

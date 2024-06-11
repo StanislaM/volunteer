@@ -30,3 +30,12 @@ export interface IAccountInfo {
     firstName: string;
     lastName: string;
 }
+
+export interface IRegisterData {
+    firstName: string;
+    lastName: string;
+    email: string;
+    region: string;
+    password: string;
+    repeatPassword: string;
+}

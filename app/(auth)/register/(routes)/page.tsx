@@ -14,7 +14,7 @@ const RegisterPage = (props: Props) => {
 
             <main className="min-h-screen">
                 <Container>
-                    <section className="pt-[160px]">
+                    <section className="pb-[80px] pt-[160px]">
                         <H type="h2" className="pb-16 text-center">
                             Зареєструватись
                         </H>

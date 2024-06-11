@@ -2,10 +2,23 @@
 
 import Button from "@/components/ui/Button";
 import Input from "@/components/ui/Input";
+import Select from "@/components/ui/Select";
+import { validateRegisterFormData } from "@/lib/validators";
+import { regions } from "@/shared/staticData";
+import { IRegisterData } from "@/shared/types";
 import Link from "next/link";
 import React, { useState } from "react";
 
 type Props = {} & React.FormHTMLAttributes<HTMLFormElement>;
+
+const someData: IRegisterData = {
+    firstName: "Stas",
+    lastName: "Stas",
+    email: "sadsa@sads.com",
+    password: "Qwerty123",
+    repeatPassword: "Qwerty123",
+    region: "Чернігівська область",
+};
 
 const RegisterForm = (props: Props) => {
     const [email, setEmail] = useState("");
@@ -15,8 +28,18 @@ const RegisterForm = (props: Props) => {
     const [surname, setSurname] = useState("");
     const [region, setRegion] = useState("");
 
+    console.log(validateRegisterFormData(someData));
+
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        e.stopPropagation();
+    };
+
     return (
-        <form className="flex w-[395px] flex-col items-center">
+        <form
+            className="flex w-[395px] flex-col items-center"
+            onSubmit={handleSubmit}
+        >
             <Input
                 placeholder="Ім'я"
                 type="text"
@@ -33,12 +56,12 @@ const RegisterForm = (props: Props) => {
                 onChange={(e) => setSurname(e.target.value)}
             />
 
-            <Input
-                placeholder="Регіон"
-                type="text"
-                className="mb-8"
+            <Select
+                className="mb-8 w-full"
+                options={regions}
                 value={region}
-                onChange={(e) => setRegion(e.target.value)}
+                setValue={setRegion}
+                placeholder="Оберіть область"
             />
 
             <Input
@@ -65,7 +88,12 @@ const RegisterForm = (props: Props) => {
                 onChange={(e) => setRepeatPassword(e.target.value)}
             />
 
-            <Button size="lg" fontStyle="semibold" className="mb-3 w-full">
+            <Button
+                size="lg"
+                fontStyle="semibold"
+                className="mb-3 w-full"
+                type="submit"
+            >
                 Зареєструватись
             </Button>
 
