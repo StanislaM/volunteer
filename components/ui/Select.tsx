@@ -10,6 +10,7 @@ type Props = {
     placeholder?: string;
     value: string;
     setValue: (value: string) => void;
+    error?: string;
 };
 
 const Select = ({
@@ -18,6 +19,7 @@ const Select = ({
     placeholder = "",
     value,
     setValue,
+    error = "",
 }: Props) => {
     const [isCollapsed, setIsCollapsed] = useState(true);
     const [filteredOptions, setFilteredOptions] = useState(options);
@@ -30,6 +32,7 @@ const Select = ({
         setFilteredOptions(() =>
             options.filter((option) => value === "" || option.includes(value)),
         );
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [value]);
 
     return (
@@ -38,6 +41,7 @@ const Select = ({
                 value={value}
                 onChange={handleChange}
                 placeholder={placeholder}
+                error={error}
             />
 
             <div
