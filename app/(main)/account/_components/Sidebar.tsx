@@ -1,18 +1,46 @@
+"use client";
+
 import Button from "@/components/ui/Button";
 import Logo from "@/components/ui/Logo";
-import React from "react";
+import React, { useState } from "react";
 import SidebarItem from "./SidebarItem";
 import MeIcon from "@/components/icons/MeIcon";
 import ClipIcon from "@/components/icons/ClipIcon";
 import CompleteIcon from "@/components/icons/CompleteIcon";
 import PlusIcon from "@/components/icons/PlusIcon";
 import Profile from "./Profile";
+import { useSelector } from "react-redux";
+import { RootState } from "@/lib/store";
+import NoVolunteerModal from "@/components/modals/NoVolunteerModal";
+import GetVolunteerRoleRequestModal from "@/components/modals/GetVolunteerRoleRequestModal";
 
 type Props = {};
 
 const Sidebar = (props: Props) => {
+    const { volunteer } = useSelector((state: RootState) => state.user);
+    const [showNoVolunteerModal, setShowNoVolunteerModal] = useState(false);
+    const [showRequestVolunteerModal, setShowRequestVolunteerModal] =
+        useState(false);
+
+    const createNewMission = () => {
+        if (volunteer === null) {
+            setShowNoVolunteerModal(true);
+        }
+    };
+
     return (
         <aside className="h-full w-[280px] border-r-2 border-r-gray-semi-light border-opacity-40">
+            <NoVolunteerModal
+                isOpen={showNoVolunteerModal}
+                setIsOpen={setShowNoVolunteerModal}
+                isRequestFormOpen={showRequestVolunteerModal}
+                setIsRequestFormOpen={setShowRequestVolunteerModal}
+            />
+            <GetVolunteerRoleRequestModal
+                isOpen={showRequestVolunteerModal}
+                setIsOpen={setShowRequestVolunteerModal}
+            />
+
             <div className="flex h-full flex-col justify-between pb-5 pl-4 pr-3 pt-8">
                 <div>
                     <Logo />
@@ -21,6 +49,7 @@ const Sidebar = (props: Props) => {
                         <Button
                             size="sm"
                             className="h-[47px] w-full px-3 text-[16px] font-bold"
+                            onClick={() => createNewMission()}
                         >
                             <PlusIcon />
                             <span className="ml-1">Створити нову місію</span>

@@ -1,5 +1,5 @@
 import { regions, TRegions } from "@/shared/staticData";
-import { IRegisterData } from "@/shared/types";
+import { IGetVolunteerRoleData, IRegisterData } from "@/shared/types";
 
 export const validateRegisterFormData = (data: IRegisterData) => {
     const errors: Partial<IRegisterData> = {};
@@ -40,6 +40,18 @@ export const validateRegisterFormData = (data: IRegisterData) => {
 
     if (data.password !== data.repeatPassword) {
         errors.repeatPassword = "Паролі не співпадають";
+    }
+
+    return errors;
+};
+
+export const validateVolunteerRequestFormData = (
+    data: IGetVolunteerRoleData,
+) => {
+    const errors: Partial<IGetVolunteerRoleData> = {};
+
+    if (/\d/.test(data.organizationName) || data.organizationName.length < 3) {
+        errors.organizationName = "Неправильна назва";
     }
 
     return errors;

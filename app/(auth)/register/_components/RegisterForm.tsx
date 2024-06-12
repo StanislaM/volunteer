@@ -17,15 +17,6 @@ import { useDispatch } from "react-redux";
 
 type Props = {} & React.FormHTMLAttributes<HTMLFormElement>;
 
-const someData: IRegisterData = {
-    firstName: "Stas",
-    lastName: "Stas",
-    email: "sadsa@sads.com",
-    password: "Qwerty123",
-    repeatPassword: "Qwerty123",
-    region: "Чернігівська область",
-};
-
 const RegisterForm = (props: Props) => {
     const dispatch = useDispatch() as AppDispatch;
     const router = useRouter();
@@ -67,9 +58,6 @@ const RegisterForm = (props: Props) => {
             password: password,
             repeatPassword: repeatPassword,
         };
-
-        console.log(dataForValidation);
-        console.log(validateRegisterFormData(dataForValidation));
 
         const validationErrors = validateRegisterFormData(dataForValidation);
 

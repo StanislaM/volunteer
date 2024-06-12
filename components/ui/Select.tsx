@@ -33,7 +33,7 @@ const Select = ({
             options.filter((option) => value === "" || option.includes(value)),
         );
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [value]);
+    }, [value, options]);
 
     return (
         <div className={`relative ${className}`}>

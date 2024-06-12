@@ -42,12 +42,14 @@ export interface IUserState {
     status: "unauthorized" | "authorizating" | "authorized";
     firstName: string | undefined;
     lastName: string | undefined;
+    volunteer: string | null;
 }
 
 const initialState: IUserState = {
     status: "unauthorized",
     firstName: undefined,
     lastName: undefined,
+    volunteer: null,
 };
 
 export const userSlice = createSlice({
@@ -65,6 +67,7 @@ export const userSlice = createSlice({
             .addCase(authorizeByLoginData.fulfilled, (state, action) => {
                 state.firstName = action.payload.data.firstName;
                 state.lastName = action.payload.data.lastName;
+                state.volunteer = action.payload.data.volunteer;
                 state.status = "authorized";
             })
             .addCase(authorizeByLoginData.pending, (state, action) => {
@@ -73,11 +76,15 @@ export const userSlice = createSlice({
             .addCase(authorizeByLoginData.rejected, (state, action) => {
                 state.firstName = "";
                 state.lastName = "";
+                state.volunteer = null;
                 state.status = "unauthorized";
             })
             .addCase(autoLogin.fulfilled, (state, action) => {
+                console.log(action.payload);
+
                 state.firstName = action.payload.data.firstName;
                 state.lastName = action.payload.data.lastName;
+                state.volunteer = action.payload.data.volunteer;
                 state.status = "authorized";
             })
             .addCase(autoLogin.pending, (state, action) => {
@@ -86,6 +93,7 @@ export const userSlice = createSlice({
             .addCase(autoLogin.rejected, (state, action) => {
                 state.firstName = "";
                 state.lastName = "";
+                state.volunteer = null;
                 state.status = "unauthorized";
             });
     },

@@ -39,3 +39,9 @@ export interface IRegisterData {
     password: string;
     repeatPassword: string;
 }
+
+export interface IGetVolunteerRoleData {
+    organizationName: string;
+    isSolo: boolean;
+    activities: number[];
+}
