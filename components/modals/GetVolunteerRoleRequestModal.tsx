@@ -26,7 +26,9 @@ const GetVolunteerRoleRequestModal = ({ isOpen, setIsOpen }: Props) => {
                             форму і дочекайтесь перевірки модерацією
                         </H>
 
-                        <GetVolunteerRoleRequestForm />
+                        <GetVolunteerRoleRequestForm
+                            closeModal={() => setIsOpen(false)}
+                        />
                     </div>
                 </Modal>
             )}

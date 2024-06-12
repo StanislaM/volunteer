@@ -11,9 +11,11 @@ import Checkbox from "./ui/Checkbox";
 import { IGetVolunteerRoleData } from "@/shared/types";
 import GroupCheckbox from "./ui/GroupCheckbox";
 
-type Props = {};
+type Props = {
+    closeModal: () => void;
+};
 
-const GetVolunteerRoleRequestForm = (props: Props) => {
+const GetVolunteerRoleRequestForm = ({ closeModal }: Props) => {
     const [organizationName, setOrganizationName] = useState("");
     const [organizationNameError, setOrganizationNameError] = useState("");
     const [isSolo, setIsSolo] = useState(false);
@@ -71,8 +73,13 @@ const GetVolunteerRoleRequestForm = (props: Props) => {
             .post("/api/volunteer/account", dataForValidation, {
                 withCredentials: true,
             })
-            .then((data) => console.log(data))
-            .catch((data) => console.log(data))
+            .then((data) => {
+                console.log(data);
+                closeModal();
+            })
+            .catch((data) => {
+                console.log(data);
+            })
             .finally(() => setIsSending(false));
     };
 
@@ -108,7 +115,7 @@ const GetVolunteerRoleRequestForm = (props: Props) => {
                 </span>
             )}
 
-            <Label className="mb-0 mt-4 text-xl">Оберіть род занять</Label>
+            <Label className=" mt-4 text-xl">Оберіть род занять</Label>
             <GroupCheckbox
                 options={activities.map((activity) => {
                     return { id: activity.id, value: activity.name };
