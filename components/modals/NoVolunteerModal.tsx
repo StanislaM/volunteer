@@ -6,18 +6,22 @@ import Button from "../ui/Button";
 import H from "../ui/H";
 import GetVolunteerRoleRequestModal from "./GetVolunteerRoleRequestModal";
 import Modal from "./Modal";
+import { IVolunteerData } from "@/shared/types";
+import SpinnerIcon from "../icons/SpinnerIcon";
 
 type Props = {
     isOpen: boolean;
     setIsOpen: (state: boolean) => void;
     isRequestFormOpen: boolean;
     setIsRequestFormOpen: (state: boolean) => void;
+    volunteerData: IVolunteerData | null;
 };
 
 const NoVolunteerModal = ({
     isOpen,
     setIsOpen,
     setIsRequestFormOpen,
+    volunteerData,
 }: Props) => {
     return (
         <>
@@ -33,20 +37,39 @@ const NoVolunteerModal = ({
                         <H type="h3" className="text-center">
                             Ви ще не є підтвердженим волонтером
                         </H>
-                        <p className="my-4 text-center">
-                            Для того щоб отримати роль волонтера і створювати
-                            нові волонтерські місії, спочатку заповніть форму і
-                            зачекайте доки адміністратор перевірить інформацію
-                        </p>
-                        <Button
-                            center
-                            onClick={() => {
-                                setIsRequestFormOpen(true);
-                                setIsOpen(false);
-                            }}
-                        >
-                            Заповнити форму
-                        </Button>
+                        {volunteerData === null ? (
+                            <>
+                                <p className="my-4 text-center">
+                                    Для того щоб отримати роль волонтера і
+                                    створювати нові волонтерські місії, спочатку
+                                    заповніть форму і зачекайте доки
+                                    адміністратор перевірить інформацію
+                                </p>
+                                <Button
+                                    center
+                                    onClick={() => {
+                                        setIsRequestFormOpen(true);
+                                        setIsOpen(false);
+                                    }}
+                                >
+                                    Заповнити форму
+                                </Button>
+                            </>
+                        ) : !volunteerData.validated ? (
+                            <>
+                                <p className="my-4 text-center">
+                                    Ви вже подали заявку
+                                    <br />
+                                    Очікуйте доки модерація перевірить і надасть
+                                    вам відповідні права <br />
+                                </p>
+                                <div className="flex justify-center">
+                                    <SpinnerIcon size="lg" />
+                                </div>
+                            </>
+                        ) : (
+                            <p>Вже вже можете створювати місії</p>
+                        )}
                     </div>
                 </Modal>
             )}

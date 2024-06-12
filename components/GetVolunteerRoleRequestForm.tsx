@@ -10,12 +10,17 @@ import SpinnerIcon from "./icons/SpinnerIcon";
 import Checkbox from "./ui/Checkbox";
 import { IGetVolunteerRoleData } from "@/shared/types";
 import GroupCheckbox from "./ui/GroupCheckbox";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "@/lib/store";
+import { autoLogin } from "@/lib/features/user/userSlice";
 
 type Props = {
     closeModal: () => void;
 };
 
 const GetVolunteerRoleRequestForm = ({ closeModal }: Props) => {
+    const dispatch = useDispatch() as AppDispatch;
+
     const [organizationName, setOrganizationName] = useState("");
     const [organizationNameError, setOrganizationNameError] = useState("");
     const [isSolo, setIsSolo] = useState(false);
@@ -75,7 +80,7 @@ const GetVolunteerRoleRequestForm = ({ closeModal }: Props) => {
             })
             .then((data) => {
                 console.log(data);
-                closeModal();
+                dispatch(autoLogin()).then(() => closeModal());
             })
             .catch((data) => {
                 console.log(data);

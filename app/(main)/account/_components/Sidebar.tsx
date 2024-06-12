@@ -23,7 +23,7 @@ const Sidebar = (props: Props) => {
         useState(false);
 
     const createNewMission = () => {
-        if (volunteer === null) {
+        if (volunteer === null || (volunteer && !volunteer.validated)) {
             setShowNoVolunteerModal(true);
         }
     };
@@ -35,6 +35,7 @@ const Sidebar = (props: Props) => {
                 setIsOpen={setShowNoVolunteerModal}
                 isRequestFormOpen={showRequestVolunteerModal}
                 setIsRequestFormOpen={setShowRequestVolunteerModal}
+                volunteerData={volunteer}
             />
             <GetVolunteerRoleRequestModal
                 isOpen={showRequestVolunteerModal}

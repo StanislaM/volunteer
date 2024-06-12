@@ -45,3 +45,9 @@ export interface IGetVolunteerRoleData {
     isSolo: boolean;
     activities: number[];
 }
+
+export interface IVolunteerData {
+    isSolo: boolean;
+    organizationName: string;
+    validated: boolean;
+}

@@ -1,4 +1,4 @@
-import { ILoginData } from "@/shared/types";
+import { ILoginData, IVolunteerData } from "@/shared/types";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
@@ -42,7 +42,7 @@ export interface IUserState {
     status: "unauthorized" | "authorizating" | "authorized";
     firstName: string | undefined;
     lastName: string | undefined;
-    volunteer: string | null;
+    volunteer: IVolunteerData | null;
 }
 
 const initialState: IUserState = {
