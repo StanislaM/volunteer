@@ -8,6 +8,7 @@ import axios from "axios";
 import SpinnerIcon from "@/components/icons/SpinnerIcon";
 import { headers } from "next/headers";
 import Button from "@/components/ui/Button";
+import Separator from "@/components/ui/Separator";
 
 type Props = {};
 
@@ -38,7 +39,7 @@ const AccountInfoPage = (props: Props) => {
                 Персональні дані
             </H>
 
-            <hr className="my-8 w-full border-b-2 border-b-gray-semi-light border-opacity-40" />
+            <Separator />
 
             {!isLoading ? (
                 <AccountInfoForm accountInfo={accountInfo} />

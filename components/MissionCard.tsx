@@ -9,6 +9,12 @@ import ParticipantsIcon from "./icons/ParticipantsIcon";
 import HeartIcon from "./icons/HeartIcon";
 import ShareIcon from "./icons/ShareIcon";
 import Button from "./ui/Button";
+import { useSelector } from "react-redux";
+import { RootState } from "@/lib/store";
+import { useRouter } from "next/navigation";
+import axios from "axios";
+import SpinnerIcon from "./icons/SpinnerIcon";
+import ClipIcon from "./icons/ClipIcon";
 
 type TInfoBlock = ({
     Icon,
@@ -28,18 +34,62 @@ const InfoBlock: TInfoBlock = ({ Icon, value }) => {
     );
 };
 
-type Props = {} & IMissionCard;
+type Props = {
+    isActive?: boolean;
+} & IMissionCard;
 
-const MissionCard = ({ id, info, descr, host, title }: Props) => {
+const MissionCard = ({
+    id,
+    info,
+    descr,
+    host,
+    title,
+    isActive = false,
+}: Props) => {
+    const { status } = useSelector((state: RootState) => state.user);
+    const router = useRouter();
+    const [isAcquiring, setIsAcquiring] = useState(false);
+
     const [hostImage, setHostImage] = useState(
         host.img || "/img/no-avatar.png",
     );
+
+    const navigateToMission = (id: string | number) => {
+        router.push(`/mission/${id}`);
+    };
+
+    const onParticipate = () => {
+        if (status !== "authorized") {
+            router.push("/login");
+        }
+
+        if (status === "authorized") {
+            setIsAcquiring(true);
+
+            axios
+                .post(
+                    `/api/event/${id}/participate`,
+                    {},
+                    { withCredentials: true },
+                )
+                .then((res) => {
+                    console.log(res);
+                    router.push("/account/active-missions");
+                })
+                .catch((res) => console.log(res))
+                .finally(() => setIsAcquiring(false));
+        }
+    };
 
     return (
         <div className="flex h-[245px] w-[430px] flex-col rounded-[20px] bg-white py-6 pl-7 pr-[22px] shadow-soft">
             <div className="flex items-start justify-between">
                 <div className="max-w-[285px]">
-                    <span className="text-[22px] font-semibold text-gray-dark">
+                    <span
+                        className="cursor-pointer text-[22px] font-semibold text-gray-dark underline"
+                        role="link"
+                        onClick={() => navigateToMission(id)}
+                    >
                         {title}
                     </span>
                     <p className="mt-1 text-[18px] font-medium leading-[22px] text-gray-medium">
@@ -88,8 +138,21 @@ const MissionCard = ({ id, info, descr, host, title }: Props) => {
                     </div>
                 </div>
 
-                <Button className="h-full rounded-[10px] px-7">
-                    Доєднатись
+                <Button
+                    className={`h-full rounded-[10px] px-7 ${isActive ? "bg-yellow-200" : ""}`}
+                    onClick={() => {
+                        if (!isActive) {
+                            onParticipate();
+                        }
+                    }}
+                >
+                    {isActive ? (
+                        <ClipIcon />
+                    ) : isAcquiring ? (
+                        <SpinnerIcon />
+                    ) : (
+                        "Доєднатись"
+                    )}
                 </Button>
             </div>
         </div>

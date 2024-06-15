@@ -4,12 +4,24 @@ import { useEffect, useState } from "react";
 import Input from "./Input";
 import ArrowDownIcon from "../icons/ArrowDownIcon";
 
+const variants = {
+    default: {
+        borderColor: "border-main-color",
+        listOffset: "top-14",
+    },
+    white: {
+        borderColor: "unset",
+        listOffset: "top-11",
+    },
+};
+
 type Props = {
     className?: string;
     options: Readonly<string[]>;
     placeholder?: string;
     value: string;
     setValue: (value: string) => void;
+    variant?: keyof typeof variants;
     error?: string;
 };
 
@@ -19,6 +31,7 @@ const Select = ({
     placeholder = "",
     value,
     setValue,
+    variant = "default",
     error = "",
 }: Props) => {
     const [isCollapsed, setIsCollapsed] = useState(true);
@@ -42,6 +55,7 @@ const Select = ({
                 onChange={handleChange}
                 placeholder={placeholder}
                 error={error}
+                variant={variant}
             />
 
             <div
@@ -53,7 +67,7 @@ const Select = ({
             </div>
 
             <div
-                className={`absolute top-14 z-50 flex  ${isCollapsed ? "max-h-[0px] border-0 py-0 " : "max-h-[120px] border-[5px] py-2"} scrollbar-custom w-full flex-col gap-y-3 overflow-y-scroll rounded-[17px]  border-main-color bg-white transition-all`}
+                className={`absolute ${variants[variant].listOffset} z-50 flex  ${isCollapsed ? "max-h-[0px] border-0 py-0 " : "max-h-[120px] border-[5px] py-2"} scrollbar-custom w-full flex-col gap-y-3 overflow-y-scroll rounded-[17px]  ${variants[variant].borderColor} bg-white transition-all`}
             >
                 {filteredOptions.length === 0 ? (
                     <div className="cursor-pointer rounded-lg px-4">

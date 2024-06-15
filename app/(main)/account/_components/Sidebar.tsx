@@ -13,10 +13,12 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/lib/store";
 import NoVolunteerModal from "@/components/modals/NoVolunteerModal";
 import GetVolunteerRoleRequestModal from "@/components/modals/GetVolunteerRoleRequestModal";
+import { useRouter } from "next/navigation";
 
 type Props = {};
 
 const Sidebar = (props: Props) => {
+    const router = useRouter();
     const { volunteer } = useSelector((state: RootState) => state.user);
     const [showNoVolunteerModal, setShowNoVolunteerModal] = useState(false);
     const [showRequestVolunteerModal, setShowRequestVolunteerModal] =
@@ -25,6 +27,10 @@ const Sidebar = (props: Props) => {
     const createNewMission = () => {
         if (volunteer === null || (volunteer && !volunteer.validated)) {
             setShowNoVolunteerModal(true);
+        }
+
+        if (volunteer?.validated) {
+            router.push("/account/create-mission");
         }
     };
 

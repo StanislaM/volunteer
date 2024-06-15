@@ -1,3 +1,5 @@
+import { TMissionStatuses } from "./staticData";
+
 export interface IMissionCard {
     id: string;
     title: string;
@@ -50,4 +52,14 @@ export interface IVolunteerData {
     isSolo: boolean;
     organizationName: string;
     validated: boolean;
+    activities: number[];
+}
+
+export interface INewMissionData {
+    name: string;
+    description: string;
+    status: string;
+    location: string;
+    date: string;
+    activities: number[];
 }

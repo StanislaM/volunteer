@@ -116,3 +116,7 @@ export const regions = <const>[
 ];
 
 export type TRegions = (typeof regions)[number];
+
+export const missionStatuses = <const>["В процесі", "Завершено"];
+
+export type TMissionStatuses = (typeof missionStatuses)[number];

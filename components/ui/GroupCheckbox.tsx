@@ -6,12 +6,14 @@ type Props = {
     options: { id: number; value: string }[];
     selectedValues: number[];
     setSelectedValues: React.Dispatch<React.SetStateAction<number[]>>;
+    border?: boolean;
 };
 
 const GroupCheckbox = ({
     options,
     selectedValues,
     setSelectedValues,
+    border = false,
 }: Props) => {
     const handleCheck = (value: number) => {
         if (selectedValues.indexOf(value) !== -1) {
@@ -29,6 +31,7 @@ const GroupCheckbox = ({
                     title={option.value}
                     isChecked={selectedValues.indexOf(option.id) !== -1}
                     setIsChecked={() => handleCheck(option.id)}
+                    border={border}
                 />
             ))}
         </div>

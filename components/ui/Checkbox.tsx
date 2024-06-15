@@ -15,6 +15,7 @@ type Props = {
     title: string;
     variant?: keyof typeof variants;
     isChecked: boolean;
+    border?: boolean;
     setIsChecked: React.Dispatch<React.SetStateAction<boolean>>;
     customCheck?: (() => void) | null;
 };
@@ -25,13 +26,14 @@ const Checkbox = ({
     setIsChecked,
     customCheck = null,
     variant = "default",
+    border = false,
     className = "",
 }: Props) => {
     return (
         <div className={`flex items-center gap-x-2  ${className}`}>
             <div
                 role="button"
-                className={`${variants[variant].circle} ${isChecked ? variants[variant].checked : variants[variant].unChecked}`}
+                className={`${variants[variant].circle} ${border && !isChecked ? "border" : ""} ${isChecked ? variants[variant].checked : variants[variant].unChecked}`}
                 onClick={() =>
                     (customCheck && customCheck()) ||
                     setIsChecked((state) => !state)

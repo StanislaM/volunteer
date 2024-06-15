@@ -11,7 +11,7 @@ import React, { useEffect, useState } from "react";
 
 type Props = {};
 
-const AccountPage = (props: Props) => {
+const ActiveMissionsPage = (props: Props) => {
     const [isLoading, setIsLoading] = useState(false);
     const [missions, setMissions] = useState<IMissionCard[]>([]);
 
@@ -19,7 +19,7 @@ const AccountPage = (props: Props) => {
         setIsLoading(true);
 
         axios
-            .get("/api/event/my/0", { withCredentials: true })
+            .get("/api/event/participate/0", { withCredentials: true })
             .then((res) => {
                 setMissions(
                     res.data.map((mission: ITmpMissionData): IMissionCard => {
@@ -66,7 +66,7 @@ const AccountPage = (props: Props) => {
             ) : (
                 <div className="mt-8 flex flex-wrap justify-between gap-y-20 px-20">
                     {missions.map((mission) => (
-                        <MissionCard key={mission.id} {...mission} />
+                        <MissionCard key={mission.id} {...mission} isActive />
                     ))}
                 </div>
             )}
@@ -74,4 +74,4 @@ const AccountPage = (props: Props) => {
     );
 };
 
-export default AccountPage;
+export default ActiveMissionsPage;

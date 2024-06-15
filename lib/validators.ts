@@ -1,5 +1,14 @@
-import { regions, TRegions } from "@/shared/staticData";
-import { IGetVolunteerRoleData, IRegisterData } from "@/shared/types";
+import {
+    missionStatuses,
+    regions,
+    TMissionStatuses,
+    TRegions,
+} from "@/shared/staticData";
+import {
+    IGetVolunteerRoleData,
+    INewMissionData,
+    IRegisterData,
+} from "@/shared/types";
 
 export const validateRegisterFormData = (data: IRegisterData) => {
     const errors: Partial<IRegisterData> = {};
@@ -50,8 +59,30 @@ export const validateVolunteerRequestFormData = (
 ) => {
     const errors: Partial<IGetVolunteerRoleData> = {};
 
-    if (/\d/.test(data.organizationName) || data.organizationName.length < 3) {
+    if (data.organizationName.length < 3) {
         errors.organizationName = "Неправильна назва";
+    }
+
+    return errors;
+};
+
+export const validateNewMissionFormData = (data: INewMissionData) => {
+    const errors: Partial<INewMissionData> = {};
+
+    if (data.name.length < 6) {
+        errors.name = "Назва занадто коротка";
+    }
+
+    if (data.description.length < 16) {
+        errors.description = "Опис занадто короткий";
+    }
+
+    if (data.location.length < 3) {
+        errors.location = "Неправильне місце";
+    }
+
+    if (missionStatuses.indexOf(data.status as TMissionStatuses) === -1) {
+        errors.status = "Неправильний статус";
     }
 
     return errors;
