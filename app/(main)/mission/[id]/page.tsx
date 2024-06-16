@@ -46,7 +46,9 @@ const MissionPage = ({ params }: Props) => {
                             <SpinnerIcon size="lg" />
                         </div>
                     ) : (
-                        missionInfo && <MissionInfo {...missionInfo} />
+                        missionInfo && (
+                            <MissionInfo id={params.id} {...missionInfo} />
+                        )
                     )}
                 </Container>
             </main>
