@@ -79,3 +79,7 @@ export interface IMissionFullInfo {
         organizationName: string;
     };
 }
+
+export type TFilters = {
+    name: string;
+};

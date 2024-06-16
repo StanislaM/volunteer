@@ -17,7 +17,7 @@ const MainLayout = ({ children }: Props) => {
     }
 
     return (
-        <div className="flex min-h-screen">
+        <div className="flex h-screen">
             <div>
                 <Sidebar />
             </div>

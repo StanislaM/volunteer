@@ -1,17 +1,17 @@
 "use client";
 
 import ConfirmIcon from "@/components/icons/ConfirmIcon";
+import GroupIcon from "@/components/icons/GroupIcon";
 import PenIcon from "@/components/icons/PenIcon";
 import TelegramIcon from "@/components/icons/TelegramIcon";
 import XMarkIcon from "@/components/icons/XMarkIcon";
+import GetContractorRoleRequestModal from "@/components/modals/GetContractorRoleRequestModal";
 import TelegramConectModal from "@/components/modals/TelegramConectModal";
 import Button from "@/components/ui/Button";
 import Input from "@/components/ui/Input";
 import Label from "@/components/ui/Label";
 import { IAccountInfo } from "@/shared/types";
-import axios from "axios";
-import { useQRCode } from "next-qrcode";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
 type Props = {
     accountInfo: IAccountInfo | undefined;
@@ -27,6 +27,7 @@ const AccountInfoForm = ({ accountInfo }: Props) => {
     );
 
     const [showTelegramModal, setShowTelegramModal] = useState(false);
+    const [showContractorModal, setShowContractorModal] = useState(false);
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -129,6 +130,22 @@ const AccountInfoForm = ({ accountInfo }: Props) => {
             <TelegramConectModal
                 isOpen={showTelegramModal}
                 setIsOpen={setShowTelegramModal}
+            />
+
+            <Button
+                className="mt-5 w-min text-nowrap rounded-[8px]"
+                onClick={() => setShowContractorModal(true)}
+            >
+                <div className="flex items-center gap-x-1">
+                    <>
+                        <GroupIcon />
+                        Стати підрядником
+                    </>
+                </div>
+            </Button>
+            <GetContractorRoleRequestModal
+                isOpen={showContractorModal}
+                setIsOpen={setShowContractorModal}
             />
         </form>
     );

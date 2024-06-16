@@ -1,12 +1,7 @@
-"use client";
-
 import Footer from "@/app/(home)/_components/Footer";
 import Nav from "@/app/(home)/_components/Nav";
 import Container from "@/components/Container";
-import SpinnerIcon from "@/components/icons/SpinnerIcon";
 import { IMissionFullInfo } from "@/shared/types";
-import axios from "axios";
-import React, { useEffect, useState } from "react";
 import MissionInfo from "../_components/MissionInfo";
 
 type Props = {
@@ -15,25 +10,13 @@ type Props = {
     };
 };
 
-const MissionPage = ({ params }: Props) => {
-    const [missionInfo, setMissionInfo] = useState<
-        IMissionFullInfo | undefined
-    >(undefined);
-    const [isLoading, setIsLoading] = useState(false);
-
-    const fetchMissionInfo = () => {
-        setIsLoading(true);
-
-        axios
-            .get(`/api/event/${params.id}`)
-            .then((res) => setMissionInfo(res.data as IMissionFullInfo))
-            .catch((res) => console.log(res))
-            .finally(() => setIsLoading(false));
-    };
-
-    useEffect(() => {
-        fetchMissionInfo();
-    }, []);
+const MissionPage = async ({ params }: Props) => {
+    const res = await fetch(
+        `https://diplomas.medilawvichi.com/api/event/${params.id}`,
+        { cache: "force-cache" },
+    );
+    const missionInfo: IMissionFullInfo =
+        (await res.json()) as IMissionFullInfo;
 
     return (
         <div>
@@ -41,15 +24,7 @@ const MissionPage = ({ params }: Props) => {
 
             <main className="min-h-dvh pt-32">
                 <Container>
-                    {isLoading ? (
-                        <div className="flex justify-center">
-                            <SpinnerIcon size="lg" />
-                        </div>
-                    ) : (
-                        missionInfo && (
-                            <MissionInfo id={params.id} {...missionInfo} />
-                        )
-                    )}
+                    <MissionInfo id={params.id} {...missionInfo} />
                 </Container>
             </main>
 

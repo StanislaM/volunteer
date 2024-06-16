@@ -1,14 +1,19 @@
-import React from "react";
+"use client";
+
+import React, { useState } from "react";
 import Nav from "../../_components/Nav";
 import Footer from "../../_components/Footer";
-import MissionsList from "./_components/MissionsList";
+
 import H from "@/components/ui/H";
 import Filter from "./_components/Filter";
-import Container from "@/components/Container";
+import MissionsList from "@/components/MissionsList";
+import { TFilters } from "@/shared/types";
 
 type Props = {};
 
 const MissionsPage = (props: Props) => {
+    const [filters, setFilters] = useState<TFilters>({ name: "" });
+
     return (
         <>
             <Nav />
@@ -17,11 +22,13 @@ const MissionsPage = (props: Props) => {
                 Список всіх місій
             </H>
 
-            <main className="flex justify-center pb-16">
+            <main className="flex min-h-dvh justify-center pb-16">
                 <div className="flex gap-x-10 pr-36">
-                    <Filter />
+                    <Filter filters={filters} setFilters={setFilters} />
 
-                    <MissionsList />
+                    <div className="max-w-[1000px]">
+                        <MissionsList extendable filters={filters} />
+                    </div>
                 </div>
             </main>
 

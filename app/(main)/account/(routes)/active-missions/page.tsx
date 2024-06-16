@@ -3,6 +3,7 @@
 import { ITmpMissionData } from "@/app/(home)/_sections/Missions";
 import SpinnerIcon from "@/components/icons/SpinnerIcon";
 import MissionCard from "@/components/MissionCard";
+import MissionsList from "@/components/MissionsList";
 import H from "@/components/ui/H";
 import Separator from "@/components/ui/Separator";
 import { IMissionCard } from "@/shared/types";
@@ -59,17 +60,9 @@ const ActiveMissionsPage = (props: Props) => {
 
             <Separator />
 
-            {isLoading ? (
-                <div className="mt-8 flex justify-center">
-                    <SpinnerIcon size="lg" />
-                </div>
-            ) : (
-                <div className="mt-8 flex flex-wrap justify-between gap-y-20 px-20">
-                    {missions.map((mission) => (
-                        <MissionCard key={mission.id} {...mission} isActive />
-                    ))}
-                </div>
-            )}
+            <div>
+                <MissionsList extendable participantMissions />
+            </div>
         </div>
     );
 };

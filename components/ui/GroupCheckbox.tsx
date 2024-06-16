@@ -7,6 +7,7 @@ type Props = {
     selectedValues: number[];
     setSelectedValues: React.Dispatch<React.SetStateAction<number[]>>;
     border?: boolean;
+    className?: string;
 };
 
 const GroupCheckbox = ({
@@ -14,6 +15,7 @@ const GroupCheckbox = ({
     selectedValues,
     setSelectedValues,
     border = false,
+    className = "",
 }: Props) => {
     const handleCheck = (value: number) => {
         if (selectedValues.indexOf(value) !== -1) {
@@ -24,7 +26,7 @@ const GroupCheckbox = ({
     };
 
     return (
-        <div className="flex flex-col">
+        <div className={`flex flex-col ${className}`}>
             {options.map((option) => (
                 <Checkbox
                     key={option.id}
