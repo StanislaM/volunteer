@@ -63,3 +63,19 @@ export interface INewMissionData {
     date: string;
     activities: number[];
 }
+
+export interface IMissionFullInfo {
+    name: string;
+    description: string;
+    date: string;
+    location: string;
+    participantsCount: number;
+    status: string;
+    activities: {
+        id: number;
+        name: string;
+    }[];
+    volunteer: {
+        organizationName: string;
+    };
+}
