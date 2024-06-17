@@ -26,7 +26,7 @@ const MissionsPage = (props: Props) => {
                 <div className="flex gap-x-10 pr-36">
                     <Filter filters={filters} setFilters={setFilters} />
 
-                    <div className="max-w-[1000px]">
+                    <div className="w-[1000px]">
                         <MissionsList extendable filters={filters} />
                     </div>
                 </div>

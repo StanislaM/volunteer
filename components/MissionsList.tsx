@@ -32,14 +32,13 @@ const MissionsList = ({
         console.log(filters);
 
         axios
-            .get(
+            .post(
                 `/api/event/${myMissions ? "my" : participantMissions ? "participate" : "all"}/${pages - 1}`,
                 {
+                    search: filters?.name || "",
+                },
+                {
                     withCredentials: true,
-                    data: JSON.stringify({
-                        search: filters?.name,
-                    }),
-                    maxBodyLength: Infinity,
                 },
             )
             .then((res) => {

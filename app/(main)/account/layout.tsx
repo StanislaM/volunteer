@@ -4,6 +4,7 @@ import React from "react";
 import Sidebar from "./_components/Sidebar";
 import { useSelector } from "react-redux";
 import { RootState } from "@/lib/store";
+import Alerts from "@/components/Alerts";
 
 type Props = {
     children: React.ReactNode;
@@ -24,6 +25,8 @@ const MainLayout = ({ children }: Props) => {
             <div className="w-full overflow-y-scroll px-14 py-12">
                 {children}
             </div>
+
+            <Alerts />
         </div>
     );
 };

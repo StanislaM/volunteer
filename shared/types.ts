@@ -55,6 +55,10 @@ export interface IVolunteerData {
     activities: number[];
 }
 
+export interface IContractorData {
+    activities: number[];
+}
+
 export interface INewMissionData {
     name: string;
     description: string;
@@ -83,3 +87,13 @@ export interface IMissionFullInfo {
 export type TFilters = {
     name: string;
 };
+
+export interface IMessage {
+    id: number;
+    content: string;
+    time: string;
+    seen: boolean;
+    event: {
+        id: number;
+    };
+}

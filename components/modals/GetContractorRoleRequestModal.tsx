@@ -8,6 +8,9 @@ import axios from "axios";
 import GroupCheckbox from "../ui/GroupCheckbox";
 import Button from "../ui/Button";
 import SpinnerIcon from "../icons/SpinnerIcon";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "@/lib/store";
+import { autoLogin } from "@/lib/features/user/userSlice";
 
 type Props = {
     isOpen: boolean;
@@ -15,6 +18,8 @@ type Props = {
 };
 
 const GetContractorRoleRequestModal = ({ isOpen, setIsOpen }: Props) => {
+    const { contractor } = useSelector((state: RootState) => state.user);
+    const dispatch = useDispatch() as AppDispatch;
     const [activities, setActivities] = useState<
         { id: number; name: string }[]
     >([]);
@@ -41,7 +46,9 @@ const GetContractorRoleRequestModal = ({ isOpen, setIsOpen }: Props) => {
                     withCredentials: true,
                 },
             )
-            .then(() => setIsOpen(false))
+            .then(() => {
+                dispatch(autoLogin()).then(() => setIsOpen(false));
+            })
             .catch((res) => console.log(res))
             .finally(() => setIsSending(false));
     };
@@ -58,8 +65,9 @@ const GetContractorRoleRequestModal = ({ isOpen, setIsOpen }: Props) => {
                             <XMarkIcon size="lg" fill="black" strokeWidth={2} />
                         </div>
                         <H type="h3" className="mb-4 text-center">
-                            Для отримання ролі підрялника оберіть категорії за
-                            якими ви будете отримувати повідомлення
+                            {!contractor
+                                ? "Для отримання ролі підрялника оберіть категорії за якими ви будете отримувати повідомлення"
+                                : "Ви вже є підрядником, проте можете змінити категорії на які підписані"}
                         </H>
 
                         <GroupCheckbox
