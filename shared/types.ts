@@ -56,7 +56,10 @@ export interface IVolunteerData {
 }
 
 export interface IContractorData {
-    activities: number[];
+    activities: {
+        id: number;
+        name: string;
+    }[];
 }
 
 export interface INewMissionData {

@@ -29,7 +29,6 @@ const MissionsList = ({
 
     const fetchMissions = (pages = 1, clearMissions = false) => {
         setIsLoading(true);
-        console.log(filters);
 
         axios
             .post(

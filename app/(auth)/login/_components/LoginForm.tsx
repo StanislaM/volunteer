@@ -7,7 +7,7 @@ import { authorizeByLoginData } from "@/lib/features/user/userSlice";
 import { AppDispatch, RootState } from "@/lib/store";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 type Props = {} & React.FormHTMLAttributes<HTMLFormElement>;
@@ -27,9 +27,11 @@ const LoginForm = ({ ...props }: Props) => {
         e.stopPropagation();
         e.preventDefault();
 
-        dispatch(authorizeByLoginData({ email, password })).then(() =>
-            router.push("/account"),
-        );
+        dispatch(authorizeByLoginData({ email, password })).then((res) => {
+            if (res.type === "user/authorizeByLoginData/fulfilled") {
+                router.push("/account");
+            }
+        });
     };
 
     return (

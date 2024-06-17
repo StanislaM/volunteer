@@ -23,7 +23,9 @@ const GetContractorRoleRequestModal = ({ isOpen, setIsOpen }: Props) => {
     const [activities, setActivities] = useState<
         { id: number; name: string }[]
     >([]);
-    const [choosenActivities, setchoosenActivities] = useState<number[]>([]);
+    const [choosenActivities, setchoosenActivities] = useState<number[]>(
+        contractor?.activities.map((activity) => activity.id) || [],
+    );
     const [isSending, setIsSending] = useState(false);
 
     useEffect(() => {
