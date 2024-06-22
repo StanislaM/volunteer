@@ -12,7 +12,10 @@ import { TFilters } from "@/shared/types";
 type Props = {};
 
 const MissionsPage = (props: Props) => {
-    const [filters, setFilters] = useState<TFilters>({ name: "" });
+    const [filters, setFilters] = useState<TFilters>({
+        name: "",
+        activities: [],
+    });
 
     return (
         <>

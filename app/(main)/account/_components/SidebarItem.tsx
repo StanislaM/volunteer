@@ -29,8 +29,6 @@ const SidebarItem = ({ title, Icon, link, active = false }: Props) => {
                     {title}
                 </span>
             </div>
-
-            <ArrowDownIcon />
         </div>
     );
 };

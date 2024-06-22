@@ -35,6 +35,7 @@ const MissionsList = ({
                 `/api/event/${myMissions ? "my" : participantMissions ? "participate" : "all"}/${pages - 1}`,
                 {
                     search: filters?.name || "",
+                    activities: filters?.activities || [],
                 },
                 {
                     withCredentials: true,
@@ -63,7 +64,7 @@ const MissionsList = ({
                                         day: "numeric",
                                     }),
                                     location: mission.location,
-                                    participants: 22,
+                                    participants: mission.participantsCount,
                                 },
                             };
                         },

@@ -7,12 +7,21 @@ import H from "@/components/ui/H";
 import { RootState } from "@/lib/store";
 import { staticData } from "@/shared/staticData";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { useSelector } from "react-redux";
 
 type Props = {};
 
 const Header = (props: Props) => {
+    const router = useRouter();
     const { status } = useSelector((state: RootState) => state.user);
+
+    const navigateToMissions = () => {
+        router.push("/missions");
+    };
+    const navigateToCabinet = () => {
+        router.push("/account");
+    };
 
     return (
         <header className="pb-[30px] pt-[200px]">
@@ -28,7 +37,12 @@ const Header = (props: Props) => {
                         </p>
 
                         <div className="mt-4 flex">
-                            <Button size="xl" fontStyle="semibold">
+                            <Button
+                                size="xl"
+                                fontStyle="semibold"
+                                className="z-20"
+                                onClick={navigateToCabinet}
+                            >
                                 {status === "authorized" ? (
                                     "Кабінет"
                                 ) : status === "authorizating" ? (
@@ -39,9 +53,11 @@ const Header = (props: Props) => {
                             </Button>
 
                             <Button
+                                onClick={navigateToMissions}
+                                role="link"
                                 variant="outline"
                                 size="xl"
-                                className="-z-10 -ml-5 rounded-l-none bg-white pr-5"
+                                className="-ml-5 rounded-l-none bg-white pr-5"
                             >
                                 Переглянути місії
                             </Button>

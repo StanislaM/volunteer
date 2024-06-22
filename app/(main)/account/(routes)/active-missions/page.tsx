@@ -10,7 +10,7 @@ const ActiveMissionsPage = (props: Props) => {
     return (
         <div>
             <H type="h3" className="text-center">
-                Мої місії
+                Місії в яких я приймаю участь
             </H>
 
             <Separator />

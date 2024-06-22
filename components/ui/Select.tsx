@@ -22,6 +22,7 @@ type Props = {
     value: string;
     setValue: (value: string) => void;
     variant?: keyof typeof variants;
+    disabled?: boolean;
     error?: string;
 };
 
@@ -32,6 +33,7 @@ const Select = ({
     value,
     setValue,
     variant = "default",
+    disabled = false,
     error = "",
 }: Props) => {
     const [isCollapsed, setIsCollapsed] = useState(true);
@@ -56,12 +58,15 @@ const Select = ({
                 placeholder={placeholder}
                 error={error}
                 variant={variant}
+                disabled={disabled}
             />
 
             <div
-                className={`absolute right-5 top-1/2 -translate-y-1/2 cursor-pointer transition-transform ${!isCollapsed && "rotate-180"}`}
+                className={`absolute right-5 top-1/2 -translate-y-1/2 cursor-pointer transition-transform ${!isCollapsed && "rotate-180"} ${disabled && "opacity-0"}`}
                 role="button"
-                onClick={() => setIsCollapsed((state) => !state)}
+                onClick={() => {
+                    if (!disabled) setIsCollapsed((state) => !state);
+                }}
             >
                 <ArrowDownIcon />
             </div>

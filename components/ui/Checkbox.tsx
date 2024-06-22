@@ -16,6 +16,7 @@ type Props = {
     variant?: keyof typeof variants;
     isChecked: boolean;
     border?: boolean;
+    disabled?: boolean;
     setIsChecked: React.Dispatch<React.SetStateAction<boolean>>;
     customCheck?: (() => void) | null;
 };
@@ -27,6 +28,7 @@ const Checkbox = ({
     customCheck = null,
     variant = "default",
     border = false,
+    disabled = false,
     className = "",
 }: Props) => {
     return (
@@ -34,10 +36,13 @@ const Checkbox = ({
             <div
                 role="button"
                 className={`${variants[variant].circle} ${border && !isChecked ? "border" : ""} ${isChecked ? variants[variant].checked : variants[variant].unChecked}`}
-                onClick={() =>
+                onClick={() => {
+                    if (disabled) {
+                        return;
+                    }
                     (customCheck && customCheck()) ||
-                    setIsChecked((state) => !state)
-                }
+                        setIsChecked((state) => !state);
+                }}
             />
             <span>{title}</span>
         </div>

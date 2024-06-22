@@ -13,6 +13,7 @@ export interface ITmpMissionData {
     location: string;
     date: string;
     status: string;
+    participantsCount: number;
 }
 
 type Props = {};

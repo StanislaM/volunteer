@@ -90,10 +90,12 @@ const MissionCard = ({
                         role="link"
                         onClick={() => navigateToMission(id)}
                     >
-                        {title}
+                        {title.slice(0, 20) +
+                            `${title.length >= 20 ? "..." : ""}`}
                     </span>
-                    <p className="mt-1 text-[18px] font-medium leading-[22px] text-gray-medium">
-                        {descr.slice(0, 50)}
+                    <p className="mt-1 break-words text-[16px] font-medium leading-[22px] text-gray-medium">
+                        {descr.slice(0, 45) +
+                            `${descr.length >= 45 ? "..." : ""}`}
                     </p>
                 </div>
 

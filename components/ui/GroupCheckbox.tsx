@@ -8,6 +8,7 @@ type Props = {
     setSelectedValues: React.Dispatch<React.SetStateAction<number[]>>;
     border?: boolean;
     className?: string;
+    disabled?: boolean;
 };
 
 const GroupCheckbox = ({
@@ -15,9 +16,14 @@ const GroupCheckbox = ({
     selectedValues,
     setSelectedValues,
     border = false,
+    disabled = false,
     className = "",
 }: Props) => {
     const handleCheck = (value: number) => {
+        if (disabled) {
+            return;
+        }
+
         if (selectedValues.indexOf(value) !== -1) {
             setSelectedValues(selectedValues.filter((item) => item !== value));
         } else {

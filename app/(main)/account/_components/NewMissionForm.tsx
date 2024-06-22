@@ -1,5 +1,6 @@
 "use client";
 
+import SpinnerIcon from "@/components/icons/SpinnerIcon";
 import Button from "@/components/ui/Button";
 import GroupCheckbox from "@/components/ui/GroupCheckbox";
 import Input from "@/components/ui/Input";
@@ -24,8 +25,6 @@ const NewMissionForm = (props: Props) => {
     const [nameError, setNameError] = useState("");
     const [description, setDescription] = useState("");
     const [descriptionError, setDescriptionError] = useState("");
-    const [status, setStatus] = useState("");
-    const [statusError, setStatusError] = useState("");
     const [location, setLocation] = useState("");
     const [locationError, setLocationError] = useState("");
     const [activities, setActivities] = useState<
@@ -46,14 +45,12 @@ const NewMissionForm = (props: Props) => {
         setNameError("");
         setDescriptionError("");
         setLocationError("");
-        setStatusError("");
     };
 
     const clearFields = () => {
         setName("");
         setDescription("");
         setLocation("");
-        setStatus("");
         setActivities([]);
     };
 
@@ -68,7 +65,7 @@ const NewMissionForm = (props: Props) => {
             description: description,
             location: location,
             activities: choosenActivities,
-            status: status as TMissionStatuses,
+            status: "В процесі",
             date: new Date().toISOString(),
         };
 
@@ -85,10 +82,6 @@ const NewMissionForm = (props: Props) => {
 
             if (validationErrors.location) {
                 setLocationError(validationErrors.location);
-            }
-
-            if (validationErrors.status) {
-                setStatusError(validationErrors.status);
             }
 
             return;
@@ -161,23 +154,8 @@ const NewMissionForm = (props: Props) => {
                 border
             />
 
-            <Select
-                className="mt-4"
-                options={missionStatuses}
-                value={status}
-                setValue={setStatus}
-                placeholder="Оберіть статус"
-                variant="white"
-                error={statusError}
-            />
-            {statusError && (
-                <span className="self-start pl-3 text-red-400">
-                    {statusError}
-                </span>
-            )}
-
             <Button className="mt-4" size="lg" type="submit">
-                Створити місію
+                {isCreating ? <SpinnerIcon /> : "Створити місію"}
             </Button>
         </form>
     );

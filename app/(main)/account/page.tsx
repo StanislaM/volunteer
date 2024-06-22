@@ -7,10 +7,14 @@ import { IAccountInfo } from "@/shared/types";
 import axios from "axios";
 import SpinnerIcon from "@/components/icons/SpinnerIcon";
 import Separator from "@/components/ui/Separator";
+import { useSelector } from "react-redux";
+import { RootState } from "@/lib/store";
+import VolunteerInfoForm from "./_components/VolunteerInfoForm";
 
 type Props = {};
 
 const AccountInfoPage = (props: Props) => {
+    const { volunteer } = useSelector((state: RootState) => state.user);
     const [accountInfo, setAccountInfo] = useState<IAccountInfo | undefined>(
         undefined,
     );
@@ -40,7 +44,15 @@ const AccountInfoPage = (props: Props) => {
             <Separator />
 
             {!isLoading ? (
-                <AccountInfoForm accountInfo={accountInfo} />
+                <>
+                    <div className="flex gap-x-20">
+                        <AccountInfoForm accountInfo={accountInfo} />
+
+                        {volunteer?.validated && (
+                            <VolunteerInfoForm {...volunteer} />
+                        )}
+                    </div>
+                </>
             ) : (
                 <SpinnerIcon />
             )}

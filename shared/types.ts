@@ -31,6 +31,7 @@ export interface IAccountInfo {
     email: string;
     firstName: string;
     lastName: string;
+    region: string;
 }
 
 export interface IRegisterData {
@@ -89,6 +90,7 @@ export interface IMissionFullInfo {
 
 export type TFilters = {
     name: string;
+    activities: number[];
 };
 
 export interface IMessage {
