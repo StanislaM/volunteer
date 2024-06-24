@@ -1,16 +1,26 @@
 "use client";
 
+import { ITmpMissionData } from "@/app/(home)/_sections/Missions";
+import ArrowDownIcon from "@/components/icons/ArrowDownIcon";
 import ClockIcon from "@/components/icons/ClockIcon";
 import LocationIcon from "@/components/icons/LocationIcon";
 import ParticipantsIcon from "@/components/icons/ParticipantsIcon";
+import PlusIcon from "@/components/icons/PlusIcon";
 import SpinnerIcon from "@/components/icons/SpinnerIcon";
+import MissionCard from "@/components/MissionCard";
 import Button from "@/components/ui/Button";
 import H from "@/components/ui/H";
 import Separator from "@/components/ui/Separator";
-import { IMissionFullInfo } from "@/shared/types";
+import { RootState } from "@/lib/store";
+import {
+    IMissionCard,
+    IMissionFullInfo,
+    IPreviousEvents,
+} from "@/shared/types";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 
 type Props = { id: string } & IMissionFullInfo;
 
@@ -25,8 +35,15 @@ const MissionInfo = ({
     activities,
     status,
 }: Props) => {
+    const { volunteer: userVolunteer } = useSelector(
+        (state: RootState) => state.user,
+    );
     const router = useRouter();
     const [isAcquiring, setIsAcquiring] = useState(false);
+    const createNextMission = () => {
+        router.push(`/account/create-mission?prevId=${id}`);
+    };
+    const [prevEvents, setPrevEvents] = useState<IMissionCard[]>([]);
 
     const participate = () => {
         setIsAcquiring(true);
@@ -37,6 +54,45 @@ const MissionInfo = ({
             .catch(() => router.push("/login"))
             .finally(() => setIsAcquiring(false));
     };
+
+    useEffect(() => {
+        axios
+            .get(
+                `https://volunteer.stu.cn.ua/api/event/${id}/previous-events`,
+                {
+                    withCredentials: true,
+                },
+            )
+            .then((res) =>
+                setPrevEvents(
+                    res.data.map((mission: ITmpMissionData): IMissionCard => {
+                        return {
+                            id: mission.id.toString(),
+                            title: mission.name,
+                            descr: mission.description,
+                            host: {
+                                name: "Іван Д.",
+                                img: "",
+                            },
+                            info: {
+                                date: new Date(mission.date).toLocaleDateString(
+                                    "uk-UA",
+                                    {
+                                        month: "long",
+                                        day: "numeric",
+                                    },
+                                ),
+                                location: mission.location,
+                                participants: mission.participantsCount,
+                            },
+                            volunteer: mission.volunteer,
+                            missionStatus: mission.status,
+                        };
+                    }),
+                ),
+            )
+            .catch((res) => console.log(res));
+    }, []);
 
     return (
         <div>
@@ -98,9 +154,36 @@ const MissionInfo = ({
                 </div>
             </div>
 
-            <Button size="lg" className="mt-10" onClick={participate}>
-                {isAcquiring ? <SpinnerIcon /> : "Долучитись"}
-            </Button>
+            <div className="mt-10 flex gap-x-8">
+                <Button size="lg" className="" onClick={participate}>
+                    {isAcquiring ? <SpinnerIcon /> : "Долучитись"}
+                </Button>
+                {volunteer.id === userVolunteer?.id && (
+                    <Button
+                        size="lg"
+                        onClick={createNextMission}
+                        className="rounded-[10px] "
+                    >
+                        <PlusIcon />
+                    </Button>
+                )}
+            </div>
+
+            <H className="mb-3 mt-8" type="h3">
+                Логістичний ланцюжок
+            </H>
+            <div className="flex flex-wrap gap-x-8 pb-9">
+                {prevEvents.map((event, i) => (
+                    <div key={event.id} className="flex items-center gap-x-4">
+                        <div
+                            className={`${i === 0 ? "rotate-180" : "rotate-90"} mr-4 scale-[3]`}
+                        >
+                            <ArrowDownIcon />
+                        </div>
+                        <MissionCard {...event} />
+                    </div>
+                ))}
+            </div>
         </div>
     );
 };

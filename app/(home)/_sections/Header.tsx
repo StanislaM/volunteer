@@ -38,6 +38,7 @@ const Header = (props: Props) => {
 
                         <div className="mt-4 flex">
                             <Button
+                                hoverEffect={false}
                                 size="xl"
                                 fontStyle="semibold"
                                 className="z-20"
@@ -53,6 +54,7 @@ const Header = (props: Props) => {
                             </Button>
 
                             <Button
+                                hoverEffect={false}
                                 onClick={navigateToMissions}
                                 role="link"
                                 variant="outline"

@@ -13,6 +13,10 @@ export interface IMissionCard {
         date: string;
         participants: number;
     };
+    volunteer: {
+        id: number;
+    };
+    missionStatus: string;
 }
 
 export interface ICategoryCard {
@@ -50,10 +54,11 @@ export interface IGetVolunteerRoleData {
 }
 
 export interface IVolunteerData {
+    id: number;
     isSolo: boolean;
     organizationName: string;
     validated: boolean;
-    activities: number[];
+    activities: { id: number; name: string }[];
 }
 
 export interface IContractorData {
@@ -70,6 +75,7 @@ export interface INewMissionData {
     location: string;
     date: string;
     activities: number[];
+    previousEvent?: number | null;
 }
 
 export interface IMissionFullInfo {
@@ -85,7 +91,13 @@ export interface IMissionFullInfo {
     }[];
     volunteer: {
         organizationName: string;
+        id: number;
     };
+}
+
+export interface IPreviousEvents
+    extends Omit<IMissionFullInfo, "previousEvent"> {
+    id: number;
 }
 
 export type TFilters = {

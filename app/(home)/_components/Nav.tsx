@@ -32,7 +32,12 @@ const Nav = (props: Props) => {
                     <ul className="flex items-center justify-center gap-x-6 font-normal">
                         {staticData.navLinks.map((link, i) => (
                             <li key={i}>
-                                <Link href={link.href}>{link.title}</Link>
+                                <Link
+                                    className="relative before:absolute before:-bottom-1 before:h-[2px] before:w-0 before:bg-white before:transition-all before:content-[''] hover:before:w-full"
+                                    href={link.href}
+                                >
+                                    {link.title}
+                                </Link>
                             </li>
                         ))}
                     </ul>

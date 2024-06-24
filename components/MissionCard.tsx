@@ -1,8 +1,8 @@
 "use client";
 
-import { IMissionCard } from "@/shared/types";
+import { IMissionCard, IPreviousEvents } from "@/shared/types";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import LocationIcon from "./icons/LocationIcon";
 import ClockIcon from "./icons/ClockIcon";
 import ParticipantsIcon from "./icons/ParticipantsIcon";
@@ -15,6 +15,8 @@ import { useRouter } from "next/navigation";
 import axios from "axios";
 import SpinnerIcon from "./icons/SpinnerIcon";
 import ClipIcon from "./icons/ClipIcon";
+import CompleteIcon from "./icons/CompleteIcon";
+import PlusIcon from "./icons/PlusIcon";
 
 type TInfoBlock = ({
     Icon,
@@ -36,6 +38,9 @@ const InfoBlock: TInfoBlock = ({ Icon, value }) => {
 
 type Props = {
     isActive?: boolean;
+    volunteer?: {
+        id: number;
+    };
 } & IMissionCard;
 
 const MissionCard = ({
@@ -44,11 +49,16 @@ const MissionCard = ({
     descr,
     host,
     title,
+    volunteer,
+    missionStatus,
     isActive = false,
 }: Props) => {
-    const { status } = useSelector((state: RootState) => state.user);
+    const { status, volunteer: userVolunteer } = useSelector(
+        (state: RootState) => state.user,
+    );
     const router = useRouter();
     const [isAcquiring, setIsAcquiring] = useState(false);
+    const [isCompleting, setIsCompleting] = useState(false);
 
     const [hostImage, setHostImage] = useState(
         host.img || "/img/no-avatar.png",
@@ -79,6 +89,27 @@ const MissionCard = ({
                 .catch((res) => console.log(res))
                 .finally(() => setIsAcquiring(false));
         }
+    };
+
+    const onEndMission = () => {
+        setIsCompleting(true);
+        axios
+            .patch(
+                `/api/event/${id}`,
+                {
+                    status: "Завершено",
+                },
+                {
+                    withCredentials: true,
+                },
+            )
+            .then(() => router.push("/account/completed-missions"))
+            .catch((res) => console.log(res))
+            .finally(() => setIsCompleting(false));
+    };
+
+    const createNextMission = () => {
+        router.push(`/account/create-mission?prevId=${id}`);
     };
 
     return (
@@ -140,22 +171,60 @@ const MissionCard = ({
                     </div>
                 </div>
 
-                <Button
-                    className={`h-full rounded-[10px] px-7 ${isActive ? "bg-yellow-200" : ""}`}
-                    onClick={() => {
-                        if (!isActive) {
-                            onParticipate();
-                        }
-                    }}
-                >
-                    {isActive ? (
-                        <ClipIcon />
-                    ) : isAcquiring ? (
-                        <SpinnerIcon />
-                    ) : (
-                        "Доєднатись"
+                <div className="flex h-full gap-x-2">
+                    {missionStatus === "Завершено" && (
+                        <div className="flex h-full items-center justify-center rounded-[20px] bg-green-300 px-5">
+                            <CompleteIcon />
+                        </div>
                     )}
-                </Button>
+
+                    {volunteer?.id === userVolunteer?.id && (
+                        <>
+                            <Button
+                                onClick={createNextMission}
+                                className="h-full rounded-[10px] "
+                            >
+                                <PlusIcon />
+                            </Button>
+
+                            {missionStatus !== "Завершено" && (
+                                <Button
+                                    onClick={onEndMission}
+                                    disabled
+                                    className="h-full rounded-[10px]  px-7"
+                                >
+                                    {isActive ? (
+                                        <ClipIcon />
+                                    ) : isCompleting ? (
+                                        <SpinnerIcon />
+                                    ) : (
+                                        "Завершити"
+                                    )}
+                                </Button>
+                            )}
+                        </>
+                    )}
+
+                    {volunteer?.id !== userVolunteer?.id && (
+                        <Button
+                            className={`h-full rounded-[10px] px-7 ${isActive ? "bg-yellow-200" : ""}`}
+                            onClick={() => {
+                                if (!isActive) {
+                                    onParticipate();
+                                }
+                            }}
+                            disabled={isActive}
+                        >
+                            {isActive ? (
+                                <ClipIcon />
+                            ) : isAcquiring ? (
+                                <SpinnerIcon />
+                            ) : (
+                                "Доєднатись"
+                            )}
+                        </Button>
+                    )}
+                </div>
             </div>
         </div>
     );

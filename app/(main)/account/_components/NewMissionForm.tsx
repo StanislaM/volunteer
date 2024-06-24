@@ -5,13 +5,12 @@ import Button from "@/components/ui/Button";
 import GroupCheckbox from "@/components/ui/GroupCheckbox";
 import Input from "@/components/ui/Input";
 import Label from "@/components/ui/Label";
-import Select from "@/components/ui/Select";
 import Textarea from "@/components/ui/Textarea";
 import { RootState } from "@/lib/store";
 import { validateNewMissionFormData } from "@/lib/validators";
-import { missionStatuses, TMissionStatuses } from "@/shared/staticData";
 import { INewMissionData } from "@/shared/types";
 import axios from "axios";
+import { useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
@@ -19,7 +18,7 @@ type Props = {};
 
 const NewMissionForm = (props: Props) => {
     const { volunteer } = useSelector((state: RootState) => state.user);
-
+    const searchParams = useSearchParams();
     const [isCreating, setIsCreating] = useState(false);
     const [name, setName] = useState("");
     const [nameError, setNameError] = useState("");
@@ -31,7 +30,7 @@ const NewMissionForm = (props: Props) => {
         { id: number; name: string }[]
     >([]);
     const [choosenActivities, setchoosenActivities] = useState<number[]>(
-        volunteer?.activities || [],
+        volunteer?.activities.map((activity) => activity.id) || [],
     );
 
     useEffect(() => {
@@ -67,6 +66,8 @@ const NewMissionForm = (props: Props) => {
             activities: choosenActivities,
             status: "В процесі",
             date: new Date().toISOString(),
+            previousEvent:
+                Number.parseInt(searchParams.get("prevId") || "") || null,
         };
 
         const validationErrors = validateNewMissionFormData(dataForValidation);

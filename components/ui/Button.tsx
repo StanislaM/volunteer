@@ -1,8 +1,10 @@
 "use client";
 
+import { useRef, useState } from "react";
+
 const variants = {
     default:
-        "flex items-center justify-center rounded-[20px] bg-main-color-light text-gray-dark",
+        "flex items-center justify-center rounded-[20px] bg-main-color-light text-gray-dark ",
     outline:
         "flex items-center justify-center rounded-[20px] border border-[4px] border-main-color-light bg-none text-gray-dark",
     accent: "flex items-center justify-center rounded-[20px] bg-cherry-pink text-gray-dark",
@@ -27,6 +29,7 @@ type Props = {
     fontStyle?: keyof typeof fontStyles;
     center?: boolean;
     className?: string;
+    hoverEffect?: boolean;
 } & React.ButtonHTMLAttributes<HTMLButtonElement>;
 
 const Button = ({
@@ -35,13 +38,37 @@ const Button = ({
     size = "sm",
     fontStyle = "default",
     center = false,
+    hoverEffect = true,
     className,
     ...props
 }: Props) => {
+    const handleCursorShadow = (e: React.MouseEvent<HTMLButtonElement>) => {
+        if (!hoverEffect) {
+            return;
+        }
+        const node = e.target as HTMLElement;
+        const bounds = node.getBoundingClientRect();
+        const x = e.clientX - bounds.left;
+        const y = e.clientY - bounds.top;
+        node.style.transition = "";
+        node.style.boxShadow = `${(node.offsetWidth / 2 - x) * 0.15}px ${(node.offsetHeight / 2 - y) * 0.35}px 10px rgba(134, 206, 235, 0.815)`;
+    };
+
+    const clearShadow = (e: React.MouseEvent<HTMLButtonElement>) => {
+        if (!hoverEffect) {
+            return;
+        }
+        const node = e.target as HTMLElement;
+        node.style.transition = "0.3s all";
+        node.style.boxShadow = "0 0 10px rgba(209, 186, 124, 0.815)";
+    };
+
     return (
         <button
             {...props}
-            className={`${variants[variant]} ${sizes[size]} ${fontStyles[fontStyle]} ${center ? "mx-auto" : ""} ${className}`}
+            className={`${variants[variant]} ${sizes[size]} ${fontStyles[fontStyle]} ${center ? "mx-auto" : ""} [&>*]:pointer-events-none ${className}`}
+            onMouseMove={handleCursorShadow}
+            onMouseOut={clearShadow}
         >
             {children}
         </button>

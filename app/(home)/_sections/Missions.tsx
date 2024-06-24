@@ -14,6 +14,9 @@ export interface ITmpMissionData {
     date: string;
     status: string;
     participantsCount: number;
+    volunteer: {
+        id: number;
+    };
 }
 
 type Props = {};

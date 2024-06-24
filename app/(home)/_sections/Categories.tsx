@@ -2,9 +2,11 @@
 
 import CategoryCard from "@/components/CategoryCard";
 import Container from "@/components/Container";
+import SpinnerIcon from "@/components/icons/SpinnerIcon";
 import H from "@/components/ui/H";
 import { staticData } from "@/shared/staticData";
 import { ICategoryCard } from "@/shared/types";
+import axios from "axios";
 import { useEffect, useState } from "react";
 
 const serverData: ICategoryCard[] = [
@@ -50,9 +52,16 @@ type Props = {};
 
 const Categories = (props: Props) => {
     const [categories, setCategories] = useState<ICategoryCard[]>([]);
+    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
-        //fetch data...
+        setIsLoading(true);
+
+        axios
+            .get("/api/activity-category")
+            .then((res) => setCategories(res.data))
+            .catch((res) => console.log(res))
+            .finally(() => setIsLoading(false));
 
         setCategories(serverData);
     }, []);
@@ -68,9 +77,19 @@ const Categories = (props: Props) => {
                 </H>
 
                 <div className="mx-auto mt-8 flex max-w-[850px] flex-wrap items-center justify-center gap-x-[50px] gap-y-16">
-                    {categories.map((category) => (
-                        <CategoryCard key={category.id} {...category} />
-                    ))}
+                    {isLoading ? (
+                        <SpinnerIcon />
+                    ) : (
+                        categories.map((category) => (
+                            <CategoryCard
+                                key={category.id}
+                                url={`${category.name}`}
+                                id={category.id}
+                                icon="money"
+                                name={category.name}
+                            />
+                        ))
+                    )}
                 </div>
             </Container>
         </section>

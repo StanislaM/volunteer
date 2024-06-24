@@ -6,6 +6,7 @@ import Input from "@/components/ui/Input";
 import Label from "@/components/ui/Label";
 import { TFilters } from "@/shared/types";
 import axios from "axios";
+import { useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { useDebounce } from "use-debounce";
 
@@ -15,12 +16,14 @@ type Props = {
 };
 
 const Filter = ({ filters, setFilters }: Props) => {
+    const searchParams = useSearchParams();
     const [name, setName] = useState("");
     const [debounceName] = useDebounce(name, 500);
 
     const [activities, setActivities] = useState<
         { id: number; name: string }[]
     >([]);
+
     const [choosenActivities, setchoosenActivities] = useState<number[]>([]);
 
     useEffect(() => {
@@ -37,6 +40,17 @@ const Filter = ({ filters, setFilters }: Props) => {
     useEffect(() => {
         setFilters({ ...filters, activities: choosenActivities });
     }, [choosenActivities]);
+
+    useEffect(() => {
+        setchoosenActivities(
+            activities
+                .filter(
+                    (activity) =>
+                        activity.name === searchParams.get("category"),
+                )
+                .map((category) => category.id) || [],
+        );
+    }, [searchParams, activities]);
 
     return (
         <aside className="w-[350px] shrink-0">

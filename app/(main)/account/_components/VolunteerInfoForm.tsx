@@ -28,16 +28,19 @@ const VolunteerInfoForm = (volunteerInfo: Props) => {
         { id: number; name: string }[]
     >([]);
     const [choosenActivities, setChoosenActivities] = useState<number[]>(
-        volunteerInfo.activities || [],
+        volunteerInfo.activities.map((activity) => activity.id) || [],
     );
     const [prevInfo, setPrevInfo] = useState<
-        Partial<IVolunteerData> | undefined
+        | Partial<Omit<IVolunteerData, "activities"> & { activities: number[] }>
+        | undefined
     >(undefined);
 
     const [isEditing, setIsEditing] = useState(false);
 
     const handleSubmit = () => {
-        const dataForValidation: Partial<IVolunteerData> = {
+        const dataForValidation: Partial<
+            Omit<IVolunteerData, "activities"> & { activities: number[] }
+        > = {
             organizationName: organizationName,
             activities: choosenActivities,
             isSolo: isSolo,

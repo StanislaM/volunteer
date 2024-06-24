@@ -3,7 +3,7 @@ const nextConfig = {
     async rewrites() {
         return [{
             source: '/api/:path*',
-            destination: 'https://diplomas.medilawvichi.com/api/:path*' // Proxy to Backend
+            destination: 'https://volunteer.stu.cn.ua/api/:path*' // Proxy to Backend
         }]
     }
 };

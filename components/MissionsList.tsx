@@ -13,6 +13,7 @@ type Props = {
     extendable?: boolean;
     myMissions?: boolean;
     participantMissions?: boolean;
+    completedMissions?: boolean;
     filters?: TFilters;
 };
 
@@ -21,6 +22,7 @@ const MissionsList = ({
     extendable = false,
     myMissions = false,
     participantMissions = false,
+    completedMissions = false,
     filters,
 }: Props) => {
     const [isLoading, setIsLoading] = useState(false);
@@ -36,6 +38,7 @@ const MissionsList = ({
                 {
                     search: filters?.name || "",
                     activities: filters?.activities || [],
+                    finished: completedMissions,
                 },
                 {
                     withCredentials: true,
@@ -66,6 +69,8 @@ const MissionsList = ({
                                     location: mission.location,
                                     participants: mission.participantsCount,
                                 },
+                                volunteer: mission.volunteer,
+                                missionStatus: mission.status,
                             };
                         },
                     ),

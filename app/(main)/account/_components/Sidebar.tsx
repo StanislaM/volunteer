@@ -55,7 +55,7 @@ const Sidebar = (props: Props) => {
                     <div className="mt-20">
                         <Button
                             size="sm"
-                            className="h-[47px] w-full px-3 text-[16px] font-bold"
+                            className="h-[47px] w-full px-3 text-[16px] font-bold "
                             onClick={() => createNewMission()}
                         >
                             <PlusIcon />
