@@ -1,5 +1,5 @@
 import H from "@/components/ui/H";
-import React from "react";
+import React, { Suspense } from "react";
 import NewMissionForm from "../../_components/NewMissionForm";
 import Separator from "@/components/ui/Separator";
 
@@ -14,7 +14,9 @@ const CreateNewMissionPage = (props: Props) => {
 
             <Separator />
 
-            <NewMissionForm />
+            <Suspense>
+                <NewMissionForm />
+            </Suspense>
         </div>
     );
 };

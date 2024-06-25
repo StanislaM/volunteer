@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { Suspense, useState } from "react";
 import Nav from "../../_components/Nav";
 import Footer from "../../_components/Footer";
 
@@ -27,7 +27,9 @@ const MissionsPage = (props: Props) => {
 
             <main className="flex min-h-dvh justify-center pb-16">
                 <div className="flex gap-x-10 pr-36">
-                    <Filter filters={filters} setFilters={setFilters} />
+                    <Suspense>
+                        <Filter filters={filters} setFilters={setFilters} />
+                    </Suspense>
 
                     <div className="w-[1000px]">
                         <MissionsList extendable filters={filters} />
