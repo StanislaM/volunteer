@@ -11,7 +11,7 @@ import { validateNewMissionFormData } from "@/lib/validators";
 import { INewMissionData } from "@/shared/types";
 import axios from "axios";
 import { useSearchParams } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
 type Props = {};
@@ -102,63 +102,65 @@ const NewMissionForm = (props: Props) => {
     };
 
     return (
-        <form
-            className="flex max-w-[480px] flex-col pl-3 pt-5"
-            onSubmit={handleSubmit}
-        >
-            <Label>Назва місії</Label>
-            <Input
-                variant="white"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                error={nameError}
-            />
-            {nameError && (
-                <span className="self-start pl-3 text-red-400">
-                    {nameError}
-                </span>
-            )}
+        <Suspense>
+            <form
+                className="flex max-w-[480px] flex-col pl-3 pt-5"
+                onSubmit={handleSubmit}
+            >
+                <Label>Назва місії</Label>
+                <Input
+                    variant="white"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    error={nameError}
+                />
+                {nameError && (
+                    <span className="self-start pl-3 text-red-400">
+                        {nameError}
+                    </span>
+                )}
 
-            <Label className="mt-4">Опис місії</Label>
-            <Textarea
-                variant="white"
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-                error={descriptionError}
-            />
-            {descriptionError && (
-                <span className="self-start pl-3 text-red-400">
-                    {descriptionError}
-                </span>
-            )}
+                <Label className="mt-4">Опис місії</Label>
+                <Textarea
+                    variant="white"
+                    value={description}
+                    onChange={(e) => setDescription(e.target.value)}
+                    error={descriptionError}
+                />
+                {descriptionError && (
+                    <span className="self-start pl-3 text-red-400">
+                        {descriptionError}
+                    </span>
+                )}
 
-            <Label className="mt-4">Місце проведення</Label>
-            <Input
-                variant="white"
-                value={location}
-                onChange={(e) => setLocation(e.target.value)}
-                error={locationError}
-            />
-            {locationError && (
-                <span className="self-start pl-3 text-red-400">
-                    {locationError}
-                </span>
-            )}
+                <Label className="mt-4">Місце проведення</Label>
+                <Input
+                    variant="white"
+                    value={location}
+                    onChange={(e) => setLocation(e.target.value)}
+                    error={locationError}
+                />
+                {locationError && (
+                    <span className="self-start pl-3 text-red-400">
+                        {locationError}
+                    </span>
+                )}
 
-            <Label className="mt-4 text-xl">Оберіть род занять</Label>
-            <GroupCheckbox
-                options={activities.map((activity) => {
-                    return { id: activity.id, value: activity.name };
-                })}
-                selectedValues={choosenActivities}
-                setSelectedValues={setchoosenActivities}
-                border
-            />
+                <Label className="mt-4 text-xl">Оберіть род занять</Label>
+                <GroupCheckbox
+                    options={activities.map((activity) => {
+                        return { id: activity.id, value: activity.name };
+                    })}
+                    selectedValues={choosenActivities}
+                    setSelectedValues={setchoosenActivities}
+                    border
+                />
 
-            <Button className="mt-4" size="lg" type="submit">
-                {isCreating ? <SpinnerIcon /> : "Створити місію"}
-            </Button>
-        </form>
+                <Button className="mt-4" size="lg" type="submit">
+                    {isCreating ? <SpinnerIcon /> : "Створити місію"}
+                </Button>
+            </form>
+        </Suspense>
     );
 };
 

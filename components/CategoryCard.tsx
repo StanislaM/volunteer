@@ -8,7 +8,7 @@ const CategoryCard = ({ id, icon, name, url }: Props) => {
     return (
         <Link
             href={`/missions?category=${url}`}
-            className=" flex h-[80px] max-w-[240px] items-center justify-start gap-x-4 rounded-[20px] px-4 shadow-soft"
+            className=" flex h-[80px] w-[250px] items-center justify-start gap-x-4 rounded-[20px] px-4 shadow-soft"
         >
             <Image
                 alt="category-icon"
@@ -16,7 +16,7 @@ const CategoryCard = ({ id, icon, name, url }: Props) => {
                 width={46}
                 height={46}
             />
-            <span className="text-2xl font-normal text-gray-dark">{name}</span>
+            <span className="text-xl font-normal text-gray-dark">{name}</span>
         </Link>
     );
 };

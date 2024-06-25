@@ -16,7 +16,11 @@ const ActiveMissionsPage = (props: Props) => {
             <Separator />
 
             <div>
-                <MissionsList extendable participantMissions />
+                <MissionsList
+                    extendable
+                    participantMissions
+                    completedMissions={false}
+                />
             </div>
         </div>
     );

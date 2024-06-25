@@ -22,7 +22,7 @@ const MissionsList = ({
     extendable = false,
     myMissions = false,
     participantMissions = false,
-    completedMissions = false,
+    completedMissions = undefined,
     filters,
 }: Props) => {
     const [isLoading, setIsLoading] = useState(false);

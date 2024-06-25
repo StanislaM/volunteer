@@ -13,9 +13,9 @@ type TArticle = ({
 
 const Article: TArticle = ({ question, answer }) => {
     return (
-        <div className="flex max-w-[430px] flex-col">
+        <div className="flex max-w-[500px] flex-col">
             <span className="text-[32px] font-medium">{question}</span>
-            <p className="text-2xl font-light leading-[40px]">{answer}</p>
+            <p className="text-xl font-light leading-[40px]">{answer}</p>
         </div>
     );
 };

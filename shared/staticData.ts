@@ -16,9 +16,9 @@ const navLinks = [
 ];
 
 const headerSection = {
-    headerTitle: "Empowering Volunteers",
+    headerTitle: "Потужні Волонтери",
     headerText:
-        "HelpMatch: Connect, Contribute, and Change Communities Through Our Volunteer Logistic Platform",
+        "Volunteer: Налагоджуйте зв'язки, робіть внесок та змінюйте громади за допомогою нашої волонтерської логістичної платформи",
 };
 
 const missionsSection = {
@@ -35,22 +35,22 @@ const categoriesSection = {
 const advantagesSection = {
     sectionTitle: "Відчуй переваги",
     sectionText:
-        "Essential Tools that Make HelpMatch the Ultimate Volunteer Logistic Platform",
+        "Особливості які роблять Volunteer потужною волонтерською платформою",
     advantages: [
         {
             icon: "clock",
-            title: "Зв’язок в реальному часі",
-            descr: "Essential Tools that Make HelpMatch the Ultimate Platform",
+            title: "Сповіщення",
+            descr: "Отримуй повідомлення про нові місії прямо на сайті",
         },
         {
             icon: "box",
-            title: "Логістика",
-            descr: "Essential Tools that Make HelpMatch the Ultimate Platform",
+            title: "Логістичні ланцюжки",
+            descr: "Створюй посилання на попередні місії для налагодження поставок",
         },
         {
             icon: "document",
-            title: "Звітність",
-            descr: "Essential Tools that Make HelpMatch the Ultimate Platform",
+            title: "Телеграм бот",
+            descr: "Підписуйся, щоб отримувати сповіщення через телеграм",
         },
     ],
 };
@@ -60,19 +60,19 @@ const answersSection = {
     articles: [
         {
             question: "Як зареєструваись?",
-            answer: "Essential Tools that Make HelpMatch the Ultimate Platform",
+            answer: "Тисни приєднатись та заповнюй форму реєстрації",
         },
         {
-            question: "Як зареєструваись?",
-            answer: "Essential Tools that Make HelpMatch the Ultimate Platform",
+            question: "Як стати волонетером?",
+            answer: "В особистому кабінеті при створенні місії, буде запропоновано форма. Після заповнення, зачекай валідації і починай створювати місії",
         },
         {
-            question: "Як зареєструваись?",
-            answer: "Essential Tools that Make HelpMatch the Ultimate Platform",
+            question: "Як підписатись на розсилку?",
+            answer: "В особистому кабінеті заповнюй форму підрядника й отримуй сповіщення",
         },
         {
-            question: "Як зареєструваись?",
-            answer: "Essential Tools that Make HelpMatch the Ultimate Platform",
+            question: "Як створити ланцюжок?",
+            answer: "У власних місій наявна кнопка + для створення ланюжка",
         },
     ],
 };
