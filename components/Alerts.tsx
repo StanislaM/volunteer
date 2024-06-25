@@ -88,7 +88,7 @@ const Alerts = (props: Props) => {
             </div>
 
             <div
-                className={`absolute bottom-20 right-0 flex h-[600px] w-[270px] flex-col gap-y-4 overflow-y-scroll transition-opacity ${isOpen ? " opacity-100" : "pointer-events-none opacity-0"}`}
+                className={`absolute bottom-20 right-0 flex max-h-[600px] w-[270px] flex-col justify-end gap-y-4 overflow-y-scroll transition-opacity ${isOpen ? " opacity-100" : "pointer-events-none opacity-0"}`}
             >
                 {messages.map((message) => (
                     <Message key={message.id} {...message} />
