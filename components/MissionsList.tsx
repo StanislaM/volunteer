@@ -34,7 +34,7 @@ const MissionsList = ({
 
         axios
             .post(
-                `/api/event/${myMissions ? "my" : participantMissions ? "participate" : "all"}/${pages - 1}`,
+                `/api/event/${myMissions ? "my" : participantMissions || completedMissions ? "participate" : "all"}/${pages - 1}`,
                 {
                     search: filters?.name || "",
                     activities: filters?.activities || [],
