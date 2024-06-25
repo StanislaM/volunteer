@@ -190,8 +190,8 @@ const MissionCard = ({
                             {missionStatus !== "Завершено" && (
                                 <Button
                                     onClick={onEndMission}
-                                    disabled
-                                    className="h-full rounded-[10px]  px-7"
+                                    disabled={isActive}
+                                    className={`h-full rounded-[10px]  px-7 ${isActive && "bg-yellow-200"}`}
                                 >
                                     {isActive ? (
                                         <ClipIcon />
@@ -205,25 +205,26 @@ const MissionCard = ({
                         </>
                     )}
 
-                    {volunteer?.id !== userVolunteer?.id && (
-                        <Button
-                            className={`h-full rounded-[10px] px-7 ${isActive ? "bg-yellow-200" : ""}`}
-                            onClick={() => {
-                                if (!isActive) {
-                                    onParticipate();
-                                }
-                            }}
-                            disabled={isActive}
-                        >
-                            {isActive ? (
-                                <ClipIcon />
-                            ) : isAcquiring ? (
-                                <SpinnerIcon />
-                            ) : (
-                                "Доєднатись"
-                            )}
-                        </Button>
-                    )}
+                    {volunteer?.id !== userVolunteer?.id &&
+                        missionStatus !== "Завершено" && (
+                            <Button
+                                className={`h-full rounded-[10px] px-7 ${isActive ? "bg-yellow-200" : ""}`}
+                                onClick={() => {
+                                    if (!isActive) {
+                                        onParticipate();
+                                    }
+                                }}
+                                disabled={isActive}
+                            >
+                                {isActive ? (
+                                    <ClipIcon />
+                                ) : isAcquiring ? (
+                                    <SpinnerIcon />
+                                ) : (
+                                    "Доєднатись"
+                                )}
+                            </Button>
+                        )}
                 </div>
             </div>
         </div>
