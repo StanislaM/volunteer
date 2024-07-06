@@ -24,8 +24,8 @@ type Props = {};
 const Missions = (props: Props) => {
     return (
         <section className="relative py-[30px]">
-            <Boble className="-left-[350px] top-[130px]" />
-            <Boble className="-right-[200px] top-[300px]" variant="boble2" />
+            {/* <Boble className="-left-[350px] top-[130px]" />
+            <Boble className="-right-[200px] top-[300px]" variant="boble2" /> */}
 
             <Container>
                 <H type="h2" className="text-center">

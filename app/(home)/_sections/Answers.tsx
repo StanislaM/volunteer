@@ -25,8 +25,8 @@ type Props = {};
 const Answers = (props: Props) => {
     return (
         <section className="relative pb-[80px] pt-[40px]">
-            <Boble variant="boble4" className="-right-[150px] -top-[350px]" />
-            <Boble variant="boble5" className="-left-[170px] " />
+            {/* <Boble variant="boble4" className="-right-[150px] -top-[350px]" />
+            <Boble variant="boble5" className="-left-[170px] " /> */}
 
             <Container>
                 <H type="h2" className="text-center">

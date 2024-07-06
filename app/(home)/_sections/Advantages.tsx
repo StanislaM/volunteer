@@ -44,7 +44,7 @@ type Props = {};
 const Advantages = (props: Props) => {
     return (
         <section className="relative pb-[40px] pt-[50px]">
-            <Boble variant="boble3" className="-left-[250px] -top-[100px]" />
+            {/* <Boble variant="boble3" className="-left-[250px] -top-[100px]" /> */}
 
             <Container>
                 <div className="flex items-start justify-between">
