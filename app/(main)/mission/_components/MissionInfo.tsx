@@ -58,7 +58,7 @@ const MissionInfo = ({
     useEffect(() => {
         axios
             .get(
-                `https://volunteer.stu.cn.ua/api/event/${id}/previous-events`,
+                `${process.env.NEXT_PUBLIC_API_URL}/api/event/${id}/previous-events`,
                 {
                     withCredentials: true,
                 },
@@ -92,7 +92,7 @@ const MissionInfo = ({
                 ),
             )
             .catch((res) => console.log(res));
-    }, []);
+    }, [id]);
 
     return (
         <div>
