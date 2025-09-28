@@ -40,6 +40,8 @@ type Props = {
     isActive?: boolean;
     volunteer?: {
         id: number;
+        isOfficial?: boolean;
+        organizationName?: string;
     };
 } & IMissionCard;
 
@@ -52,6 +54,7 @@ const MissionCard = ({
     volunteer,
     missionStatus,
     isActive = false,
+    isBlog = false,
 }: Props) => {
     const { status, volunteer: userVolunteer } = useSelector(
         (state: RootState) => state.user,
@@ -113,21 +116,36 @@ const MissionCard = ({
     };
 
     return (
-        <div className="flex h-[245px] w-[430px] flex-col rounded-[20px] bg-white py-6 pl-7 pr-[22px] shadow-soft">
+        <div className="flex min-h-[245px] w-[500px] flex-col rounded-[20px] bg-white py-6 pl-7 pr-[22px] shadow-soft">
             <div className="flex items-start justify-between">
                 <div className="max-w-[285px]">
-                    <span
-                        className="cursor-pointer text-[22px] font-semibold text-gray-dark underline"
-                        role="link"
-                        onClick={() => navigateToMission(id)}
-                    >
-                        {title.slice(0, 20) +
-                            `${title.length >= 20 ? "..." : ""}`}
-                    </span>
-                    <p className="mt-1 break-words text-[16px] font-medium leading-[22px] text-gray-medium">
-                        {descr.slice(0, 45) +
-                            `${descr.length >= 45 ? "..." : ""}`}
-                    </p>
+                    <div className="mb-2 flex items-center gap-2">
+                        <span
+                            className="line-clamp-4 cursor-pointer text-[22px] font-semibold text-gray-dark underline"
+                            role="link"
+                            onClick={() => navigateToMission(id)}
+                        >
+                            {title}
+                            {/* {title.slice(0, 40) +
+                                `${title.length >= 20 ? "..." : ""}`} */}
+                        </span>
+                    </div>
+
+                    {isBlog ? (
+                        <div
+                            className="mt-1 break-words text-[16px] font-medium leading-[22px] text-gray-medium"
+                            dangerouslySetInnerHTML={{
+                                __html:
+                                    descr.slice(0, 45) +
+                                    `${descr.length >= 45 ? "..." : ""}`,
+                            }}
+                        />
+                    ) : (
+                        <p className="mt-1 break-words text-[16px] font-medium leading-[22px] text-gray-medium">
+                            {descr.slice(0, 45) +
+                                `${descr.length >= 45 ? "..." : ""}`}
+                        </p>
+                    )}
                 </div>
 
                 <div className="item-center flex flex-col gap-y-1 pt-1">
@@ -138,19 +156,38 @@ const MissionCard = ({
                         width={59}
                         height={59}
                     />
-                    <span className="font-medium text-gray-dark">
-                        {host.name.slice(0, 10)}
-                    </span>
+                    <div className="flex items-center gap-1">
+                        <span className="max-w-[80px] font-medium text-gray-dark">
+                            {host.name}
+                        </span>
+                        {volunteer?.isOfficial && (
+                            <div className="flex h-4 w-4 items-center justify-center rounded-full bg-blue-500">
+                                <svg
+                                    className="h-2.5 w-2.5 text-white"
+                                    fill="currentColor"
+                                    viewBox="0 0 20 20"
+                                >
+                                    <path
+                                        fillRule="evenodd"
+                                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                        clipRule="evenodd"
+                                    />
+                                </svg>
+                            </div>
+                        )}
+                    </div>
                 </div>
             </div>
 
             <div className="mt-1 flex items-center justify-start gap-x-3">
                 <InfoBlock Icon={<LocationIcon />} value={info.location} />
                 <InfoBlock Icon={<ClockIcon />} value={info.date} />
-                <InfoBlock
-                    Icon={<ParticipantsIcon />}
-                    value={info.participants}
-                />
+                {!isBlog && (
+                    <InfoBlock
+                        Icon={<ParticipantsIcon />}
+                        value={info.participants}
+                    />
+                )}
             </div>
 
             <div className="mt-5 h-0 w-full border-t-2 border-dotted border-gray-semi-light opacity-50 " />
@@ -172,13 +209,13 @@ const MissionCard = ({
                 </div>
 
                 <div className="flex h-full gap-x-2">
-                    {missionStatus === "Завершено" && (
+                    {missionStatus === "Завершено" && !isBlog && (
                         <div className="flex h-full items-center justify-center rounded-[20px] bg-green-300 px-5">
                             <CompleteIcon />
                         </div>
                     )}
 
-                    {volunteer?.id === userVolunteer?.id && (
+                    {volunteer?.id === userVolunteer?.id && !isBlog && (
                         <>
                             <Button
                                 onClick={createNextMission}
@@ -206,7 +243,8 @@ const MissionCard = ({
                     )}
 
                     {volunteer?.id !== userVolunteer?.id &&
-                        missionStatus !== "Завершено" && (
+                        missionStatus !== "Завершено" &&
+                        !isBlog && (
                             <Button
                                 className={`h-full rounded-[10px] px-7 ${isActive ? "bg-yellow-200" : ""}`}
                                 onClick={() => {

@@ -15,8 +15,11 @@ export interface IMissionCard {
     };
     volunteer: {
         id: number;
+        isOfficial?: boolean;
+        organizationName?: string;
     };
     missionStatus: string;
+    isBlog?: boolean;
 }
 
 export interface ICategoryCard {
@@ -58,6 +61,7 @@ export interface IVolunteerData {
     isSolo: boolean;
     organizationName: string;
     validated: boolean;
+    isOfficial?: boolean;
     activities: { id: number; name: string }[];
 }
 
@@ -85,6 +89,7 @@ export interface IMissionFullInfo {
     location: string;
     participantsCount: number;
     status: string;
+    isBlog?: boolean;
     activities: {
         id: number;
         name: string;
@@ -92,6 +97,7 @@ export interface IMissionFullInfo {
     volunteer: {
         organizationName: string;
         id: number;
+        isOfficial?: boolean;
     };
 }
 

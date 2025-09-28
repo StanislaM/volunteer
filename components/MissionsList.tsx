@@ -15,6 +15,7 @@ type Props = {
     participantMissions?: boolean;
     completedMissions?: boolean;
     filters?: TFilters;
+    blog?: boolean;
 };
 
 const MissionsList = ({
@@ -24,6 +25,7 @@ const MissionsList = ({
     participantMissions = false,
     completedMissions = undefined,
     filters,
+    blog = false,
 }: Props) => {
     const [isLoading, setIsLoading] = useState(false);
     const [missions, setMissions] = useState<IMissionCard[]>([]);
@@ -39,6 +41,7 @@ const MissionsList = ({
                     search: filters?.name || "",
                     activities: filters?.activities || [],
                     finished: completedMissions,
+                    blog: blog,
                 },
                 {
                     withCredentials: true,
@@ -56,7 +59,9 @@ const MissionsList = ({
                                 title: mission.name,
                                 descr: mission.description,
                                 host: {
-                                    name: "Іван Д.",
+                                    name:
+                                        mission.volunteer.organizationName ||
+                                        "Організація",
                                     img: "",
                                 },
                                 info: {
@@ -69,8 +74,14 @@ const MissionsList = ({
                                     location: mission.location,
                                     participants: mission.participantsCount,
                                 },
-                                volunteer: mission.volunteer,
+                                volunteer: {
+                                    id: mission.volunteer.id,
+                                    isOfficial: mission.volunteer.isOfficial,
+                                    organizationName:
+                                        mission.volunteer.organizationName,
+                                },
                                 missionStatus: mission.status,
+                                isBlog: mission.isBlog,
                             };
                         },
                     ),
@@ -92,7 +103,7 @@ const MissionsList = ({
     useEffect(() => {
         fetchMissions(1, true);
         setCurrentPages(1);
-    }, [filters]);
+    }, [filters, blog]);
 
     return (
         <div className={className}>

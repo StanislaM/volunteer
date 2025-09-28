@@ -13,6 +13,10 @@ const navLinks = [
         title: "Місії",
         href: "/missions",
     },
+    {
+        title: "Блог",
+        href: "/blog",
+    },
 ];
 
 const headerSection = {
@@ -24,7 +28,7 @@ const headerSection = {
 const missionsSection = {
     sectionTitle: "Наявні місії",
     sectionText:
-        "Обери місію до якої бажаєш долучитися і ми допоможемо зв’язатись з її організторами",
+        "Обери місію до якої бажаєш долучитися і ми допоможемо зв'язатись з її організторами",
 };
 
 const categoriesSection = {

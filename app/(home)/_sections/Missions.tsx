@@ -14,8 +14,11 @@ export interface ITmpMissionData {
     date: string;
     status: string;
     participantsCount: number;
+    isBlog?: boolean;
     volunteer: {
         id: number;
+        isOfficial?: boolean;
+        organizationName?: string;
     };
 }
 
@@ -24,9 +27,6 @@ type Props = {};
 const Missions = (props: Props) => {
     return (
         <section className="relative py-[30px]">
-            {/* <Boble className="-left-[350px] top-[130px]" />
-            <Boble className="-right-[200px] top-[300px]" variant="boble2" /> */}
-
             <Container>
                 <H type="h2" className="text-center">
                     {staticData.missionsSection.sectionTitle}
@@ -35,7 +35,7 @@ const Missions = (props: Props) => {
                     {staticData.missionsSection.sectionText}
                 </p>
 
-                <MissionsList className="mt-6" />
+                <MissionsList className="mt-6" blog={false} />
             </Container>
         </section>
     );

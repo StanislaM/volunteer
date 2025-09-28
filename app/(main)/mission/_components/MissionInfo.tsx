@@ -1,4 +1,3 @@
-// app/(main)/mission/_components/MissionInfo.tsx
 "use client";
 
 import { ITmpMissionData } from "@/app/(home)/_sections/Missions";
@@ -38,6 +37,7 @@ const MissionInfo = ({
     volunteer,
     activities,
     status,
+    isBlog = false,
 }: Props) => {
     const { volunteer: userVolunteer } = useSelector(
         (state: RootState) => state.user,
@@ -79,7 +79,9 @@ const MissionInfo = ({
                             title: mission.name,
                             descr: mission.description,
                             host: {
-                                name: "Іван Д.",
+                                name:
+                                    mission.volunteer.organizationName ||
+                                    "Організація",
                                 img: "/img/no-avatar.png",
                             },
                             info: {
@@ -91,6 +93,9 @@ const MissionInfo = ({
                             },
                             volunteer: {
                                 id: mission.volunteer.id,
+                                isOfficial: mission.volunteer.isOfficial,
+                                organizationName:
+                                    mission.volunteer.organizationName,
                             },
                             missionStatus: mission.status,
                         };
@@ -110,7 +115,6 @@ const MissionInfo = ({
 
     return (
         <div className="w-full">
-            {/* Заголовок и основная информация */}
             <div className="mb-8">
                 <H className="mb-6 text-center" type="h2">
                     {name}
@@ -122,7 +126,7 @@ const MissionInfo = ({
                             <LocationIcon className="text-blue-500" />
                             <div>
                                 <span className="text-sm text-gray-500">
-                                    Місце проведення:
+                                    {isBlog ? "Місце:" : "Місце проведення:"}
                                 </span>
                                 <div className="font-medium text-gray-dark">
                                     {location}
@@ -134,7 +138,7 @@ const MissionInfo = ({
                             <ClockIcon className="text-green-500" />
                             <div>
                                 <span className="text-sm text-gray-500">
-                                    Дата початку:
+                                    {isBlog ? "Дата:" : "Дата початку:"}
                                 </span>
                                 <div className="font-medium text-gray-dark">
                                     {formatDate(date)}
@@ -142,51 +146,59 @@ const MissionInfo = ({
                             </div>
                         </div>
 
-                        <div className="flex items-center gap-x-2">
-                            <ParticipantsIcon className="text-purple-500" />
-                            <div>
-                                <span className="text-sm text-gray-500">
-                                    Учасники:
-                                </span>
-                                <div className="font-medium text-gray-dark">
-                                    {participantsCount}
+                        {!isBlog && (
+                            <div className="flex items-center gap-x-2">
+                                <ParticipantsIcon className="text-purple-500" />
+                                <div>
+                                    <span className="text-sm text-gray-500">
+                                        Учасники:
+                                    </span>
+                                    <div className="font-medium text-gray-dark">
+                                        {participantsCount}
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        )}
 
-                        <div className="flex items-center gap-x-2">
-                            <div className="h-3 w-3 rounded-full bg-yellow-500"></div>
-                            <div>
-                                <span className="text-sm text-gray-500">
-                                    Статус:
-                                </span>
-                                <div className="font-medium text-gray-dark">
-                                    {status}
+                        {!isBlog && (
+                            <div className="flex items-center gap-x-2">
+                                <div className="h-3 w-3 rounded-full bg-yellow-500"></div>
+                                <div>
+                                    <span className="text-sm text-gray-500">
+                                        Статус:
+                                    </span>
+                                    <div className="font-medium text-gray-dark">
+                                        {status}
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        )}
                     </div>
                 </div>
 
-                {/* Кнопки действий */}
-                <div className="mb-8 flex justify-center gap-x-4">
-                    <Button size="lg" onClick={participate} className="px-8">
-                        {isAcquiring ? <SpinnerIcon /> : "Долучитись"}
-                    </Button>
-                    {volunteer.id === userVolunteer?.id && (
+                {!isBlog && (
+                    <div className="mb-8 flex justify-center gap-x-4">
                         <Button
                             size="lg"
-                            onClick={createNextMission}
-                            variant="outline"
+                            onClick={participate}
                             className="px-8"
                         >
-                            <span className="ml-2">Створити наступну</span>
+                            {isAcquiring ? <SpinnerIcon /> : "Долучитись"}
                         </Button>
-                    )}
-                </div>
+                        {volunteer.id === userVolunteer?.id && (
+                            <Button
+                                size="lg"
+                                onClick={createNextMission}
+                                variant="outline"
+                                className="px-8"
+                            >
+                                <span className="ml-2">Створити наступну</span>
+                            </Button>
+                        )}
+                    </div>
+                )}
             </div>
 
-            {/* Навигационные вкладки */}
             <div className="mb-6">
                 <div className="flex rounded-t-lg border-b border-gray-200 bg-white">
                     <button
@@ -202,19 +214,23 @@ const MissionInfo = ({
                             <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-blue-600"></div>
                         )}
                     </button>
-                    <button
-                        onClick={() => setActiveTab("poll")}
-                        className={`relative px-6 py-4 font-medium transition-colors ${
-                            activeTab === "poll"
-                                ? "bg-blue-50 text-blue-600"
-                                : "text-gray-600 hover:bg-gray-50 hover:text-gray-800"
-                        }`}
-                    >
-                        <span>Опитування</span>
-                        {activeTab === "poll" && (
-                            <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-blue-600"></div>
-                        )}
-                    </button>
+
+                    {!isBlog && (
+                        <button
+                            onClick={() => setActiveTab("poll")}
+                            className={`relative px-6 py-4 font-medium transition-colors ${
+                                activeTab === "poll"
+                                    ? "bg-blue-50 text-blue-600"
+                                    : "text-gray-600 hover:bg-gray-50 hover:text-gray-800"
+                            }`}
+                        >
+                            <span>Опитування</span>
+                            {activeTab === "poll" && (
+                                <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-blue-600"></div>
+                            )}
+                        </button>
+                    )}
+
                     <button
                         onClick={() => setActiveTab("comments")}
                         className={`relative px-6 py-4 font-medium transition-colors ${
@@ -231,23 +247,29 @@ const MissionInfo = ({
                 </div>
             </div>
 
-            {/* Контент вкладок */}
             <div className="min-h-[500px] rounded-b-lg bg-white shadow-soft">
                 {activeTab === "info" && (
                     <div className="p-6">
-                        {/* Описание */}
                         <div className="mb-8">
                             <H className="mb-4" type="h3">
-                                Опис місії
+                                {isBlog ? "Зміст" : "Опис місії"}
                             </H>
                             <div className="rounded-lg bg-gray-50 p-4">
-                                <p className="whitespace-pre-wrap leading-relaxed text-gray-dark">
-                                    {description}
-                                </p>
+                                {isBlog ? (
+                                    <div
+                                        className="prose max-w-none whitespace-pre-wrap leading-relaxed text-gray-dark"
+                                        dangerouslySetInnerHTML={{
+                                            __html: description,
+                                        }}
+                                    />
+                                ) : (
+                                    <p className="whitespace-pre-wrap leading-relaxed text-gray-dark">
+                                        {description}
+                                    </p>
+                                )}
                             </div>
                         </div>
 
-                        {/* Категории деятельности */}
                         <div className="mb-8">
                             <H className="mb-4" type="h3">
                                 Категорії діяльності
@@ -264,19 +286,32 @@ const MissionInfo = ({
                             </div>
                         </div>
 
-                        {/* Организатор */}
                         <div className="mb-8">
                             <H className="mb-4" type="h3">
                                 Організатор
                             </H>
-                            <div className="rounded-lg bg-gray-50 p-4">
+                            <div className="flex items-center gap-3 rounded-lg bg-gray-50 p-4">
                                 <p className="font-medium text-gray-dark">
                                     {volunteer.organizationName}
                                 </p>
+                                {volunteer.isOfficial && (
+                                    <div className="flex h-5 w-5 items-center justify-center rounded-full bg-blue-500">
+                                        <svg
+                                            className="h-3 w-3 text-white"
+                                            fill="currentColor"
+                                            viewBox="0 0 20 20"
+                                        >
+                                            <path
+                                                fillRule="evenodd"
+                                                d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                                clipRule="evenodd"
+                                            />
+                                        </svg>
+                                    </div>
+                                )}
                             </div>
                         </div>
 
-                        {/* Логистический цепочка */}
                         {prevEvents.length > 0 && (
                             <div>
                                 <H className="mb-4" type="h3">
@@ -308,7 +343,7 @@ const MissionInfo = ({
                     </div>
                 )}
 
-                {activeTab === "poll" && (
+                {activeTab === "poll" && !isBlog && (
                     <div className="p-6">
                         <Poll eventId={id} eventOwnerId={volunteer.id} />
                     </div>
