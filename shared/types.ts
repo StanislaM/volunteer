@@ -114,3 +114,51 @@ export interface IMessage {
         id: number;
     };
 }
+
+export interface IPoll {
+    id: number;
+    title: string;
+    questions: string[];
+    responded: number[];
+    edited: boolean;
+    vote: number | null;
+}
+
+export interface ICreatePollData {
+    title: string;
+    questions: string[];
+}
+
+export interface IUpdatePollData {
+    title?: string;
+    questions?: string[];
+}
+
+export interface IComment {
+    id: number;
+    content: string;
+    creationTime: string;
+    updateTime: string;
+    likes: number;
+    dislikes: number;
+    edited: boolean;
+    user: {
+        firstName: string;
+        lastName: string;
+    };
+    replyTo: {
+        id: number;
+    } | null;
+    reaction?: "like" | "dislike" | null;
+}
+
+export interface ICreateCommentData {
+    content: string;
+    replyTo?: number;
+}
+
+export interface IUpdateCommentData {
+    content: string;
+}
+
+export type ReactionType = "like" | "dislike";

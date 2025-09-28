@@ -8,6 +8,7 @@ import MeIcon from "@/components/icons/MeIcon";
 import ClipIcon from "@/components/icons/ClipIcon";
 import CompleteIcon from "@/components/icons/CompleteIcon";
 import PlusIcon from "@/components/icons/PlusIcon";
+import BarChartIcon from "@/components/icons/BarChartIcon";
 import Profile from "./Profile";
 import { useSelector } from "react-redux";
 import { RootState } from "@/lib/store";
@@ -82,6 +83,13 @@ const Sidebar = (props: Props) => {
                                 Icon={<CompleteIcon />}
                                 key={3}
                                 link="/account/completed-missions"
+                            />
+
+                            <SidebarItem
+                                title="Мої опитування"
+                                Icon={<BarChartIcon />}
+                                key={4}
+                                link="/account/my-polls"
                             />
                         </div>
                     </div>

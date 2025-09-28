@@ -1,3 +1,4 @@
+// app/(main)/mission/_components/MissionInfo.tsx
 "use client";
 
 import { ITmpMissionData } from "@/app/(home)/_sections/Missions";
@@ -11,6 +12,9 @@ import MissionCard from "@/components/MissionCard";
 import Button from "@/components/ui/Button";
 import H from "@/components/ui/H";
 import Separator from "@/components/ui/Separator";
+
+import Poll from "@/components/Poll/Poll";
+import Comments from "@/components/Comments/CommentsNested";
 import { RootState } from "@/lib/store";
 import {
     IMissionCard,
@@ -40,10 +44,14 @@ const MissionInfo = ({
     );
     const router = useRouter();
     const [isAcquiring, setIsAcquiring] = useState(false);
+    const [prevEvents, setPrevEvents] = useState<IMissionCard[]>([]);
+    const [activeTab, setActiveTab] = useState<"info" | "poll" | "comments">(
+        "info",
+    );
+
     const createNextMission = () => {
         router.push(`/account/create-mission?prevId=${id}`);
     };
-    const [prevEvents, setPrevEvents] = useState<IMissionCard[]>([]);
 
     const participate = () => {
         setIsAcquiring(true);
@@ -58,7 +66,7 @@ const MissionInfo = ({
     useEffect(() => {
         axios
             .get(
-                `${process.env.NEXT_PUBLIC_API_URL}/api/event/${id}/previous-events`,
+                `https://volunteer.stu.cn.ua/api/event/${id}/previous-events`,
                 {
                     withCredentials: true,
                 },
@@ -72,20 +80,18 @@ const MissionInfo = ({
                             descr: mission.description,
                             host: {
                                 name: "Іван Д.",
-                                img: "",
+                                img: "/img/no-avatar.png",
                             },
                             info: {
-                                date: new Date(mission.date).toLocaleDateString(
-                                    "uk-UA",
-                                    {
-                                        month: "long",
-                                        day: "numeric",
-                                    },
-                                ),
                                 location: mission.location,
+                                date: new Date(
+                                    mission.date,
+                                ).toLocaleDateString(),
                                 participants: mission.participantsCount,
                             },
-                            volunteer: mission.volunteer,
+                            volunteer: {
+                                id: mission.volunteer.id,
+                            },
                             missionStatus: mission.status,
                         };
                     }),
@@ -94,95 +100,225 @@ const MissionInfo = ({
             .catch((res) => console.log(res));
     }, [id]);
 
+    const formatDate = (dateString: string) => {
+        return new Date(dateString).toLocaleDateString("uk-UA", {
+            month: "long",
+            day: "2-digit",
+            year: "numeric",
+        });
+    };
+
     return (
-        <div>
-            <H type="h2">{name}</H>
-            <Separator />
+        <div className="w-full">
+            {/* Заголовок и основная информация */}
+            <div className="mb-8">
+                <H className="mb-6 text-center" type="h2">
+                    {name}
+                </H>
 
-            <div className="flex justify-between">
-                <div>
-                    <p className="text-xl">Опис: {description}</p>
-
-                    <div className="mt-4">
-                        <span className="text-xl font-light">Категорії:</span>
-                        {activities.map((activity) => (
-                            <div
-                                className="mt-1 pl-3 font-medium"
-                                key={activity.id}
-                            >
-                                {activity.name}
+                <div className="mb-6 rounded-lg bg-white p-6 shadow-soft">
+                    <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
+                        <div className="flex items-center gap-x-2">
+                            <LocationIcon className="text-blue-500" />
+                            <div>
+                                <span className="text-sm text-gray-500">
+                                    Місце проведення:
+                                </span>
+                                <div className="font-medium text-gray-dark">
+                                    {location}
+                                </div>
                             </div>
-                        ))}
-                    </div>
-
-                    <div className="mt-3 border-t-2 pt-1">
-                        Організатор: {volunteer.organizationName}
-                    </div>
-                </div>
-
-                <div className="flex h-min w-[350px] flex-col gap-y-2 border-l-2 pl-2">
-                    <div className="flex flex-wrap items-center gap-x-2">
-                        <LocationIcon />
-                        Місце проведення:
-                        <span className="ml-1 font-medium">{location}</span>
-                    </div>
-
-                    <div className="flex flex-wrap items-center gap-x-2">
-                        <ClockIcon />
-                        Дата початку:
-                        <span className="ml-1 font-medium">
-                            {new Date(date).toLocaleDateString("uk-UA", {
-                                month: "long",
-                                day: "2-digit",
-                                year: "numeric",
-                            })}
-                        </span>
-                    </div>
-
-                    <div className="flex flex-wrap items-center gap-x-2">
-                        <ParticipantsIcon />
-                        Учасники:
-                        <span className="ml-1 font-medium">
-                            {participantsCount}
-                        </span>
-                    </div>
-
-                    <div className="mt-4 flex flex-wrap items-center gap-x-2">
-                        Статус місії:
-                        <span className="ml-1 font-medium">{status}</span>
-                    </div>
-                </div>
-            </div>
-
-            <div className="mt-10 flex gap-x-8">
-                <Button size="lg" className="" onClick={participate}>
-                    {isAcquiring ? <SpinnerIcon /> : "Долучитись"}
-                </Button>
-                {volunteer.id === userVolunteer?.id && (
-                    <Button
-                        size="lg"
-                        onClick={createNextMission}
-                        className="rounded-[10px] "
-                    >
-                        <PlusIcon />
-                    </Button>
-                )}
-            </div>
-
-            <H className="mb-3 mt-8" type="h3">
-                Логістичний ланцюжок
-            </H>
-            <div className="flex flex-wrap gap-x-8 pb-9">
-                {prevEvents.map((event, i) => (
-                    <div key={event.id} className="flex items-center gap-x-4">
-                        <div
-                            className={`${i === 0 ? "rotate-180" : "rotate-90"} mr-4 scale-[3]`}
-                        >
-                            <ArrowDownIcon />
                         </div>
-                        <MissionCard {...event} />
+
+                        <div className="flex items-center gap-x-2">
+                            <ClockIcon className="text-green-500" />
+                            <div>
+                                <span className="text-sm text-gray-500">
+                                    Дата початку:
+                                </span>
+                                <div className="font-medium text-gray-dark">
+                                    {formatDate(date)}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="flex items-center gap-x-2">
+                            <ParticipantsIcon className="text-purple-500" />
+                            <div>
+                                <span className="text-sm text-gray-500">
+                                    Учасники:
+                                </span>
+                                <div className="font-medium text-gray-dark">
+                                    {participantsCount}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="flex items-center gap-x-2">
+                            <div className="h-3 w-3 rounded-full bg-yellow-500"></div>
+                            <div>
+                                <span className="text-sm text-gray-500">
+                                    Статус:
+                                </span>
+                                <div className="font-medium text-gray-dark">
+                                    {status}
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                ))}
+                </div>
+
+                {/* Кнопки действий */}
+                <div className="mb-8 flex justify-center gap-x-4">
+                    <Button size="lg" onClick={participate} className="px-8">
+                        {isAcquiring ? <SpinnerIcon /> : "Долучитись"}
+                    </Button>
+                    {volunteer.id === userVolunteer?.id && (
+                        <Button
+                            size="lg"
+                            onClick={createNextMission}
+                            variant="outline"
+                            className="px-8"
+                        >
+                            <span className="ml-2">Створити наступну</span>
+                        </Button>
+                    )}
+                </div>
+            </div>
+
+            {/* Навигационные вкладки */}
+            <div className="mb-6">
+                <div className="flex rounded-t-lg border-b border-gray-200 bg-white">
+                    <button
+                        onClick={() => setActiveTab("info")}
+                        className={`relative px-6 py-4 font-medium transition-colors ${
+                            activeTab === "info"
+                                ? "bg-blue-50 text-blue-600"
+                                : "text-gray-600 hover:bg-gray-50 hover:text-gray-800"
+                        }`}
+                    >
+                        <span>Інформація</span>
+                        {activeTab === "info" && (
+                            <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-blue-600"></div>
+                        )}
+                    </button>
+                    <button
+                        onClick={() => setActiveTab("poll")}
+                        className={`relative px-6 py-4 font-medium transition-colors ${
+                            activeTab === "poll"
+                                ? "bg-blue-50 text-blue-600"
+                                : "text-gray-600 hover:bg-gray-50 hover:text-gray-800"
+                        }`}
+                    >
+                        <span>Опитування</span>
+                        {activeTab === "poll" && (
+                            <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-blue-600"></div>
+                        )}
+                    </button>
+                    <button
+                        onClick={() => setActiveTab("comments")}
+                        className={`relative px-6 py-4 font-medium transition-colors ${
+                            activeTab === "comments"
+                                ? "bg-blue-50 text-blue-600"
+                                : "text-gray-600 hover:bg-gray-50 hover:text-gray-800"
+                        }`}
+                    >
+                        <span>Коментарі</span>
+                        {activeTab === "comments" && (
+                            <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-blue-600"></div>
+                        )}
+                    </button>
+                </div>
+            </div>
+
+            {/* Контент вкладок */}
+            <div className="min-h-[500px] rounded-b-lg bg-white shadow-soft">
+                {activeTab === "info" && (
+                    <div className="p-6">
+                        {/* Описание */}
+                        <div className="mb-8">
+                            <H className="mb-4" type="h3">
+                                Опис місії
+                            </H>
+                            <div className="rounded-lg bg-gray-50 p-4">
+                                <p className="whitespace-pre-wrap leading-relaxed text-gray-dark">
+                                    {description}
+                                </p>
+                            </div>
+                        </div>
+
+                        {/* Категории деятельности */}
+                        <div className="mb-8">
+                            <H className="mb-4" type="h3">
+                                Категорії діяльності
+                            </H>
+                            <div className="flex flex-wrap gap-2">
+                                {activities.map((activity) => (
+                                    <span
+                                        key={activity.id}
+                                        className="rounded-full bg-blue-100 px-4 py-2 text-sm font-medium text-blue-800"
+                                    >
+                                        {activity.name}
+                                    </span>
+                                ))}
+                            </div>
+                        </div>
+
+                        {/* Организатор */}
+                        <div className="mb-8">
+                            <H className="mb-4" type="h3">
+                                Організатор
+                            </H>
+                            <div className="rounded-lg bg-gray-50 p-4">
+                                <p className="font-medium text-gray-dark">
+                                    {volunteer.organizationName}
+                                </p>
+                            </div>
+                        </div>
+
+                        {/* Логистический цепочка */}
+                        {prevEvents.length > 0 && (
+                            <div>
+                                <H className="mb-4" type="h3">
+                                    Логістичний ланцюжок
+                                </H>
+                                <div className="overflow-x-auto">
+                                    <div className="flex min-w-max gap-x-8 pb-4">
+                                        {prevEvents.map((event, i) => (
+                                            <div
+                                                key={event.id}
+                                                className="flex flex-shrink-0 items-center gap-x-4"
+                                            >
+                                                <div
+                                                    className={`${
+                                                        i === 0
+                                                            ? "rotate-180"
+                                                            : "rotate-90"
+                                                    } scale-[2] text-blue-500`}
+                                                >
+                                                    <ArrowDownIcon />
+                                                </div>
+                                                <MissionCard {...event} />
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+                    </div>
+                )}
+
+                {activeTab === "poll" && (
+                    <div className="p-6">
+                        <Poll eventId={id} eventOwnerId={volunteer.id} />
+                    </div>
+                )}
+
+                {activeTab === "comments" && (
+                    <div className="p-6">
+                        <Comments eventId={id} />
+                    </div>
+                )}
             </div>
         </div>
     );
