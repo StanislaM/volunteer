@@ -136,14 +136,14 @@ const MissionCard = ({
                             className="mt-1 break-words text-[16px] font-medium leading-[22px] text-gray-medium"
                             dangerouslySetInnerHTML={{
                                 __html:
-                                    descr.slice(0, 45) +
-                                    `${descr.length >= 45 ? "..." : ""}`,
+                                    descr.slice(0, 80) +
+                                    `${descr.length >= 80 ? "..." : ""}`,
                             }}
                         />
                     ) : (
                         <p className="mt-1 break-words text-[16px] font-medium leading-[22px] text-gray-medium">
-                            {descr.slice(0, 45) +
-                                `${descr.length >= 45 ? "..." : ""}`}
+                            {descr.slice(0, 80) +
+                                `${descr.length >= 80 ? "..." : ""}`}
                         </p>
                     )}
                 </div>
@@ -157,7 +157,7 @@ const MissionCard = ({
                         height={59}
                     />
                     <div className="flex items-center gap-1">
-                        <span className="max-w-[80px] font-medium text-gray-dark">
+                        <span className="max-w-[120px] break-words font-medium text-gray-dark">
                             {host.name}
                         </span>
                         {volunteer?.isOfficial && (

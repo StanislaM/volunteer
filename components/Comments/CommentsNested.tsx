@@ -23,7 +23,9 @@ interface CommentWithReplies extends IComment {
 }
 
 const CommentsNested: React.FC<Props> = ({ eventId }) => {
-    const { status } = useSelector((state: RootState) => state.user);
+    const { status, id: currentUserId } = useSelector(
+        (state: RootState) => state.user,
+    );
     const {
         comments,
         isLoading,
@@ -144,13 +146,15 @@ const CommentsNested: React.FC<Props> = ({ eventId }) => {
 
     const handleReaction = useCallback(
         async (commentId: number, reaction: ReactionType) => {
+            if (!isLoggedIn) return;
+
             try {
                 await setReaction(commentId, reaction);
             } catch (error) {
                 console.error("Помилка реакції:", error);
             }
         },
-        [setReaction],
+        [setReaction, isLoggedIn],
     );
 
     const startEdit = useCallback(
@@ -248,6 +252,7 @@ const CommentsNested: React.FC<Props> = ({ eventId }) => {
                             key={comment.id}
                             comment={comment}
                             depth={0}
+                            currentUserId={currentUserId}
                             isLoggedIn={isLoggedIn}
                             editingId={editingId}
                             replyingToId={replyingToId}
@@ -273,6 +278,7 @@ const CommentsNested: React.FC<Props> = ({ eventId }) => {
 interface CommentThreadProps {
     comment: CommentWithReplies;
     depth: number;
+    currentUserId: number | undefined;
     isLoggedIn: boolean;
     editingId: number | null;
     replyingToId: number | null;
@@ -293,6 +299,7 @@ const CommentThread: React.FC<CommentThreadProps> = React.memo(
     ({
         comment,
         depth,
+        currentUserId,
         isLoggedIn,
         editingId,
         replyingToId,
@@ -310,6 +317,7 @@ const CommentThread: React.FC<CommentThreadProps> = React.memo(
     }) => {
         const maxDepth = 5;
         const marginLeft = Math.min(depth, maxDepth) * 40;
+        const isOwnComment = currentUserId === comment.user.id;
 
         return (
             <div className="space-y-3">
@@ -328,29 +336,25 @@ const CommentThread: React.FC<CommentThreadProps> = React.memo(
                             </span>
                         </div>
 
-                        {isLoggedIn && (
-                            <div className="flex gap-1">
-                                <Button
-                                    size="sm"
-                                    onClick={() => onStartReply(comment.id)}
-                                >
-                                    Відповісти
-                                </Button>
-                                <Button
-                                    size="sm"
-                                    onClick={() => onStartEdit(comment)}
-                                >
-                                    <PenIcon />
-                                </Button>
-                                <Button
-                                    size="sm"
-                                    variant="danger"
-                                    onClick={() => onDelete(comment.id)}
-                                >
-                                    <XMarkIcon />
-                                </Button>
-                            </div>
-                        )}
+                        {isLoggedIn &&
+                            isOwnComment &&
+                            editingId !== comment.id && (
+                                <div className="flex gap-1">
+                                    <Button
+                                        size="sm"
+                                        onClick={() => onStartEdit(comment)}
+                                    >
+                                        <PenIcon />
+                                    </Button>
+                                    <Button
+                                        size="sm"
+                                        variant="danger"
+                                        onClick={() => onDelete(comment.id)}
+                                    >
+                                        <XMarkIcon />
+                                    </Button>
+                                </div>
+                            )}
                     </div>
 
                     {editingId === comment.id ? (
@@ -391,14 +395,19 @@ const CommentThread: React.FC<CommentThreadProps> = React.memo(
                         </p>
                     )}
 
-                    {isLoggedIn && editingId !== comment.id && (
+                    {editingId !== comment.id && (
                         <div className="flex items-center gap-4 border-t pt-2">
                             <button
-                                onClick={() => onReaction(comment.id, "like")}
+                                onClick={() =>
+                                    isLoggedIn && onReaction(comment.id, "like")
+                                }
+                                disabled={!isLoggedIn}
                                 className={`flex items-center gap-1 rounded px-2 py-1 transition-colors ${
                                     comment.reaction === "like"
                                         ? "bg-green-100 text-green-600"
-                                        : "hover:bg-gray-100"
+                                        : isLoggedIn
+                                          ? "cursor-pointer hover:bg-gray-100"
+                                          : "cursor-not-allowed opacity-50"
                                 }`}
                             >
                                 👍 {comment.likes}
@@ -406,21 +415,35 @@ const CommentThread: React.FC<CommentThreadProps> = React.memo(
 
                             <button
                                 onClick={() =>
+                                    isLoggedIn &&
                                     onReaction(comment.id, "dislike")
                                 }
+                                disabled={!isLoggedIn}
                                 className={`flex items-center gap-1 rounded px-2 py-1 transition-colors ${
                                     comment.reaction === "dislike"
                                         ? "bg-red-100 text-red-600"
-                                        : "hover:bg-gray-100"
+                                        : isLoggedIn
+                                          ? "cursor-pointer hover:bg-gray-100"
+                                          : "cursor-not-allowed opacity-50"
                                 }`}
                             >
                                 👎 {comment.dislikes}
                             </button>
+
+                            {isLoggedIn && (
+                                <Button
+                                    size="sm"
+                                    variant="outline"
+                                    onClick={() => onStartReply(comment.id)}
+                                >
+                                    Відповісти
+                                </Button>
+                            )}
                         </div>
                     )}
 
                     {replyingToId === comment.id && (
-                        <div className="mt-4 rounded border border-blue-200 bg-blue-50 p-3">
+                        <div className="mt-4 space-y-3">
                             <Textarea
                                 value={replyCommentForm.content}
                                 onChange={(e) =>
@@ -428,16 +451,13 @@ const CommentThread: React.FC<CommentThreadProps> = React.memo(
                                 }
                                 placeholder="Написати відповідь..."
                                 error={replyCommentForm.errors.content}
-                                rows={2}
+                                rows={3}
                             />
-                            <div className="mt-2 flex gap-2">
+                            <div className="flex gap-2">
                                 <Button
                                     size="sm"
                                     onClick={onSubmitReply}
-                                    disabled={
-                                        isSubmitting ||
-                                        !replyCommentForm.content.trim()
-                                    }
+                                    disabled={isSubmitting}
                                 >
                                     {isSubmitting ? (
                                         <SpinnerIcon />
@@ -462,6 +482,7 @@ const CommentThread: React.FC<CommentThreadProps> = React.memo(
                         key={reply.id}
                         comment={reply}
                         depth={depth + 1}
+                        currentUserId={currentUserId}
                         isLoggedIn={isLoggedIn}
                         editingId={editingId}
                         replyingToId={replyingToId}

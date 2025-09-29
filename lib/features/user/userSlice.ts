@@ -40,6 +40,7 @@ export const autoLogin = createAsyncThunk(
 
 export interface IUserState {
     status: "unauthorized" | "authorizating" | "authorized";
+    id: number | undefined;
     firstName: string | undefined;
     lastName: string | undefined;
     volunteer: IVolunteerData | null;
@@ -48,6 +49,7 @@ export interface IUserState {
 
 const initialState: IUserState = {
     status: "unauthorized",
+    id: undefined,
     firstName: undefined,
     lastName: undefined,
     volunteer: null,
@@ -60,6 +62,7 @@ export const userSlice = createSlice({
     reducers: {
         logout: (state) => {
             state.status = "unauthorized";
+            state.id = undefined;
             state.volunteer = null;
             state.contractor = null;
             state.firstName = "";
@@ -69,6 +72,7 @@ export const userSlice = createSlice({
     extraReducers: (builder) => {
         builder
             .addCase(authorizeByLoginData.fulfilled, (state, action) => {
+                state.id = action.payload.data.id;
                 state.firstName = action.payload.data.firstName;
                 state.lastName = action.payload.data.lastName;
                 state.volunteer = action.payload.data.volunteer;
@@ -79,6 +83,7 @@ export const userSlice = createSlice({
                 state.status = "authorizating";
             })
             .addCase(authorizeByLoginData.rejected, (state, action) => {
+                state.id = undefined;
                 state.firstName = "";
                 state.lastName = "";
                 state.volunteer = null;
@@ -88,6 +93,7 @@ export const userSlice = createSlice({
             .addCase(autoLogin.fulfilled, (state, action) => {
                 console.log(action.payload);
 
+                state.id = action.payload.data.id;
                 state.firstName = action.payload.data.firstName;
                 state.lastName = action.payload.data.lastName;
                 state.volunteer = action.payload.data.volunteer;
@@ -98,6 +104,7 @@ export const userSlice = createSlice({
                 state.status = "authorizating";
             })
             .addCase(autoLogin.rejected, (state, action) => {
+                state.id = undefined;
                 state.firstName = "";
                 state.lastName = "";
                 state.volunteer = null;
@@ -107,7 +114,6 @@ export const userSlice = createSlice({
     },
 });
 
-// Action creators are generated for each case reducer function
 export const { logout } = userSlice.actions;
 
 export default userSlice.reducer;

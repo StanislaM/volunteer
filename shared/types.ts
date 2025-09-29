@@ -149,6 +149,7 @@ export interface IComment {
     dislikes: number;
     edited: boolean;
     user: {
+        id: number;
         firstName: string;
         lastName: string;
     };
