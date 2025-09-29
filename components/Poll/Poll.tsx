@@ -316,7 +316,7 @@ const Poll: React.FC<Props> = ({ eventId, eventOwnerId }) => {
                             {isEditing ? "Зберегти" : "Створити"}
                         </Button>
                         <Button
-                            variant="secondary"
+                            variant="outline"
                             onClick={
                                 isEditing
                                     ? cancelEditing

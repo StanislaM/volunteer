@@ -1,8 +1,8 @@
 type Props = {
-    fill?: string;
+    fill?: string | "currentColor";
 };
 
-const ClockIcon = ({ fill = "#626367" }: Props) => {
+const ClockIcon = ({ fill = "currentColor" }: Props) => {
     return (
         <svg
             width="19"

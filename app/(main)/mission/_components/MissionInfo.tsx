@@ -123,7 +123,7 @@ const MissionInfo = ({
                 <div className="mb-6 rounded-lg bg-white p-6 shadow-soft">
                     <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
                         <div className="flex items-center gap-x-2">
-                            <LocationIcon className="text-blue-500" />
+                            <LocationIcon fill="#3B82F6" />
                             <div>
                                 <span className="text-sm text-gray-500">
                                     {isBlog ? "Місце:" : "Місце проведення:"}
@@ -135,7 +135,7 @@ const MissionInfo = ({
                         </div>
 
                         <div className="flex items-center gap-x-2">
-                            <ClockIcon className="text-green-500" />
+                            <ClockIcon fill="#10B981" />
                             <div>
                                 <span className="text-sm text-gray-500">
                                     {isBlog ? "Дата:" : "Дата початку:"}
@@ -148,7 +148,7 @@ const MissionInfo = ({
 
                         {!isBlog && (
                             <div className="flex items-center gap-x-2">
-                                <ParticipantsIcon className="text-purple-500" />
+                                <ParticipantsIcon fill="#8B5CF6" />
                                 <div>
                                     <span className="text-sm text-gray-500">
                                         Учасники:

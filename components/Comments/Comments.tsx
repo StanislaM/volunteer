@@ -241,7 +241,7 @@ const Comments: React.FC<Props> = ({ eventId }) => {
                             {isSubmitting ? <SpinnerIcon /> : "Опублікувати"}
                         </Button>
                         {replyToId && (
-                            <Button variant="secondary" onClick={cancelReply}>
+                            <Button variant="outline" onClick={cancelReply}>
                                 Скасувати
                             </Button>
                         )}
@@ -351,7 +351,7 @@ const Comments: React.FC<Props> = ({ eventId }) => {
                                         </Button>
                                         <Button
                                             size="sm"
-                                            variant="secondary"
+                                            variant="outline"
                                             onClick={cancelEdit}
                                         >
                                             Скасувати

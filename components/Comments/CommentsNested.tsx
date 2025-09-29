@@ -378,7 +378,7 @@ const CommentThread: React.FC<CommentThreadProps> = React.memo(
                                 </Button>
                                 <Button
                                     size="sm"
-                                    variant="secondary"
+                                    variant="outline"
                                     onClick={onCancelEdit}
                                 >
                                     Скасувати
@@ -447,7 +447,7 @@ const CommentThread: React.FC<CommentThreadProps> = React.memo(
                                 </Button>
                                 <Button
                                     size="sm"
-                                    variant="secondary"
+                                    variant="outline"
                                     onClick={onCancelReply}
                                 >
                                     Скасувати

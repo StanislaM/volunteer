@@ -4,13 +4,13 @@ const sizes = {
 };
 
 type Props = {
-    fill?: string;
+    fill?: string | "currentColor";
     size?: keyof typeof sizes;
     strokeWidth?: number;
 };
 
 const XMarkIcon = ({
-    fill = "#626367",
+    fill = "currentColor",
     size = "sm",
     strokeWidth = 1.5,
 }: Props) => {

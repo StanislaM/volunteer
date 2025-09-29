@@ -8,6 +8,7 @@ const variants = {
     outline:
         "flex items-center justify-center rounded-[20px] border border-[4px] border-main-color-light bg-none text-gray-dark",
     accent: "flex items-center justify-center rounded-[20px] bg-cherry-pink text-gray-dark",
+    danger: "flex items-center justify-center rounded-[20px] bg-red-600 text-white",
 };
 
 const sizes = {
