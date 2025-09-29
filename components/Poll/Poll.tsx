@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "@/lib/store";
-import { IPoll, ICreatePollData, IUpdatePollData } from "@/shared/types";
+import { ICreatePollData, IUpdatePollData } from "@/shared/types";
 import Button from "@/components/ui/Button";
 import Input from "@/components/ui/Input";
 import Label from "@/components/ui/Label";
@@ -12,7 +12,7 @@ import PlusIcon from "@/components/icons/PlusIcon";
 import XMarkIcon from "@/components/icons/XMarkIcon";
 import PenIcon from "@/components/icons/PenIcon";
 import ConfirmIcon from "@/components/icons/ConfirmIcon";
-import axios from "axios";
+import { usePoll } from "@/hooks/usePoll";
 
 interface Props {
     eventId: string;
@@ -21,11 +21,13 @@ interface Props {
 
 const Poll: React.FC<Props> = ({ eventId, eventOwnerId }) => {
     const { volunteer } = useSelector((state: RootState) => state.user);
-    const [poll, setPoll] = useState<IPoll | null>(null);
-    const [isLoading, setIsLoading] = useState(true);
+    const { poll, isLoading, createPoll, updatePoll, deletePoll, vote } =
+        usePoll(eventId);
+
     const [isCreating, setIsCreating] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
     const [isVoting, setIsVoting] = useState(false);
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     const [title, setTitle] = useState("");
     const [questions, setQuestions] = useState<string[]>(["", ""]);
@@ -35,22 +37,11 @@ const Poll: React.FC<Props> = ({ eventId, eventOwnerId }) => {
     const canManagePoll = volunteer?.id === eventOwnerId;
 
     useEffect(() => {
-        fetchPoll();
-    }, [eventId]);
-
-    const fetchPoll = async () => {
-        setIsLoading(true);
-        try {
-            const response = await axios.get(`/api/event/${eventId}/poll`, {
-                withCredentials: true,
-            });
-            setPoll(response.data);
-        } catch (error) {
-            setPoll(null);
-        } finally {
-            setIsLoading(false);
+        if (poll) {
+            setIsCreating(false);
+            setIsEditing(false);
         }
-    };
+    }, [poll]);
 
     const clearErrors = () => {
         setTitleError("");
@@ -93,41 +84,32 @@ const Poll: React.FC<Props> = ({ eventId, eventOwnerId }) => {
     const handleCreatePoll = async () => {
         if (!validateForm()) return;
 
-        setIsCreating(true);
+        setIsSubmitting(true);
         try {
             const pollData: ICreatePollData = { title, questions };
-            const response = await axios.post(
-                `/api/event/${eventId}/poll`,
-                pollData,
-                { withCredentials: true },
-            );
-            setPoll(response.data);
+            await createPoll(pollData);
             resetForm();
+            setIsCreating(false);
         } catch (error) {
             console.error("Помилка створення опитування:", error);
         } finally {
-            setIsCreating(false);
+            setIsSubmitting(false);
         }
     };
 
     const handleUpdatePoll = async () => {
         if (!validateForm()) return;
 
-        setIsCreating(true);
+        setIsSubmitting(true);
         try {
             const pollData: IUpdatePollData = { title, questions };
-            const response = await axios.patch(
-                `/api/event/${eventId}/poll`,
-                pollData,
-                { withCredentials: true },
-            );
-            setPoll(response.data);
-            setIsEditing(false);
+            await updatePoll(pollData);
             resetForm();
+            setIsEditing(false);
         } catch (error) {
             console.error("Помилка оновлення опитування:", error);
         } finally {
-            setIsCreating(false);
+            setIsSubmitting(false);
         }
     };
 
@@ -135,10 +117,7 @@ const Poll: React.FC<Props> = ({ eventId, eventOwnerId }) => {
         if (!confirm("Ви впевнені, що хочете видалити опитування?")) return;
 
         try {
-            await axios.delete(`/api/event/${eventId}/poll`, {
-                withCredentials: true,
-            });
-            setPoll(null);
+            await deletePoll();
         } catch (error) {
             console.error("Помилка видалення опитування:", error);
         }
@@ -147,12 +126,7 @@ const Poll: React.FC<Props> = ({ eventId, eventOwnerId }) => {
     const handleVote = async (optionIndex: number) => {
         setIsVoting(true);
         try {
-            const response = await axios.post(
-                `/api/event/${eventId}/poll/${optionIndex}`,
-                {},
-                { withCredentials: true },
-            );
-            setPoll(response.data);
+            await vote(optionIndex);
         } catch (error) {
             console.error("Помилка голосування:", error);
         } finally {
@@ -166,6 +140,11 @@ const Poll: React.FC<Props> = ({ eventId, eventOwnerId }) => {
         clearErrors();
     };
 
+    const startCreating = () => {
+        resetForm();
+        setIsCreating(true);
+    };
+
     const startEditing = () => {
         if (poll) {
             setTitle(poll.title);
@@ -176,6 +155,11 @@ const Poll: React.FC<Props> = ({ eventId, eventOwnerId }) => {
 
     const cancelEditing = () => {
         setIsEditing(false);
+        resetForm();
+    };
+
+    const cancelCreating = () => {
+        setIsCreating(false);
         resetForm();
     };
 
@@ -241,13 +225,11 @@ const Poll: React.FC<Props> = ({ eventId, eventOwnerId }) => {
                     <p className="mb-4 text-gray-medium">
                         Опитування не створено
                     </p>
-                    <Button onClick={() => setIsCreating(true)}>
-                        Створити опитування
-                    </Button>
+                    <Button onClick={startCreating}>Створити опитування</Button>
                 </div>
             )}
 
-            {!poll && !canManagePoll && (
+            {!poll && !isCreating && !canManagePoll && (
                 <div className="py-8 text-center">
                     <p className="text-gray-medium">Опитування не створено</p>
                 </div>
@@ -310,18 +292,15 @@ const Poll: React.FC<Props> = ({ eventId, eventOwnerId }) => {
                             onClick={
                                 isEditing ? handleUpdatePoll : handleCreatePoll
                             }
-                            disabled={isCreating}
+                            disabled={isSubmitting}
                         >
-                            {isCreating ? <SpinnerIcon /> : <ConfirmIcon />}
+                            {isSubmitting ? <SpinnerIcon /> : <ConfirmIcon />}
                             {isEditing ? "Зберегти" : "Створити"}
                         </Button>
                         <Button
                             variant="outline"
-                            onClick={
-                                isEditing
-                                    ? cancelEditing
-                                    : () => setIsCreating(false)
-                            }
+                            onClick={isEditing ? cancelEditing : cancelCreating}
+                            disabled={isSubmitting}
                         >
                             Скасувати
                         </Button>

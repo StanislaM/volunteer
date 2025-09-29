@@ -16,7 +16,12 @@ export const usePoll = (eventId: string) => {
             });
             setPoll(response.data);
         } catch (err) {
-            setPoll(null);
+            if (axios.isAxiosError(err) && err.response?.status === 404) {
+                setPoll(null);
+            } else {
+                setError("Помилка завантаження опитування");
+                setPoll(null);
+            }
         } finally {
             setIsLoading(false);
         }
