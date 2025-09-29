@@ -11,9 +11,7 @@ type Props = {
 };
 
 const MissionPage = async ({ params }: Props) => {
-    const res = await fetch(`${process.env.API_URL}/api/event/${params.id}`, {
-        cache: "force-cache",
-    });
+    const res = await fetch(`${process.env.API_URL}/api/event/${params.id}`);
 
     const missionInfo: IMissionFullInfo =
         (await res.json()) as IMissionFullInfo;
